@@ -108,6 +108,7 @@ const router = createBrowserRouter([
         path: "/games/7updown",
         element: <SevenUpDownPage />,
       },
+      
       {
         path: "/games/roulette",
         element: <RoulettePage />,
