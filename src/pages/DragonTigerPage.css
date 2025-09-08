@@ -1,0 +1,59 @@
+.dt-wrapper{display:grid;grid-template-columns:260px 1fr 360px;gap:16px;padding:12px;background:#16181d;color:#e6e8ee;min-height:calc(100vh - 64px)}
+.dt-left{background:#1d2026;border-radius:8px;padding:12px}
+.lobby-card{height:72px;background:linear-gradient(135deg,#7a5c17,#c5a13b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.game-list{margin-top:12px;display:grid;gap:10px}
+.game-pill{background:#14161b;border:1px solid #2a2f3a;border-radius:8px;padding:10px}
+.game-pill.active{outline:2px solid #3c82f6}
+
+.dt-main{background:#1d2026;border-radius:8px;padding:12px;display:flex;flex-direction:column}
+.dt-title{font-size:20px;font-weight:800;margin-bottom:10px}
+.dt-stage{position:relative;background:#0f1116;border-radius:8px;height:360px;overflow:hidden;border:1px solid #2a2f3a}
+.stage-overlay{position:absolute;inset:0;background:url('/public/vite.svg') center/cover no-repeat;opacity:.08}
+.sides{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:24px}
+.side.dragon,.side.tiger{font-weight:800;letter-spacing:1px;color:#e6e8ee}
+.side.dragon{color:#e04b3f}
+.side.tiger{color:#f3c23c}
+.timer{position:absolute;right:16px;bottom:16px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);border:1px solid #2a2f3a;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:12px}
+.timer .count{font-weight:800;color:#fdbd3d}
+.timer .place-bets{background:#3c82f6;border:0;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer}
+
+.dt-odds{margin-top:12px;background:#14161b;border:1px solid #2a2f3a;border-radius:8px}
+.dt-odds .row{display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #2a2f3a;color:#9aa3b2}
+.dt-odds .market-header{display:grid;grid-template-columns:1fr 120px 120px;padding:8px 12px;border-bottom:1px solid #2a2f3a;color:#9aa3b2}
+.dt-odds .market{display:grid;grid-template-columns:1fr 120px 120px;gap:12px;padding:10px 12px;border-bottom:1px dashed #2a2f3a;align-items:center}
+.dt-odds .market .name{font-weight:600}
+.odd{height:36px;border-radius:6px;border:0;cursor:pointer}
+.odd.back{background:#3b82f6;color:#fff}
+.odd.lay{background:#f43f5e;color:#fff;opacity:.7}
+
+.dt-controls.compact{margin-top:12px;display:flex;gap:12px;align-items:center}
+.dt-controls .options{display:flex;gap:8px}
+.chip{background:#262b36;border:1px solid #2f3642;color:#e6e8ee;border-radius:20px;padding:8px 14px;cursor:pointer}
+.chip.active{outline:2px solid #3b82f6}
+.bet-row{display:flex;gap:8px;margin-left:auto}
+.bet-row input{background:#0f1116;border:1px solid #2a2f3a;border-radius:6px;color:#e6e8ee;padding:8px;width:120px}
+.bet-row .play{background:#10b981;border:0;color:#051312;border-radius:6px;padding:8px 12px;font-weight:700;cursor:pointer}
+.error-msg.center{text-align:center;margin-top:8px;color:#ff7a7a}
+
+.dt-round{margin-top:12px;background:#14161b;border:1px solid #2a2f3a;border-radius:8px;padding:12px}
+.dt-round .cards{display:flex;gap:16px;justify-content:center}
+.dt-round .side .label{font-size:12px;color:#9aa3b2;margin-bottom:6px}
+.dt-round .card{background:#0f1116;border:1px solid #2a2f3a;border-radius:8px;height:64px;width:48px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.dt-round .summary{margin-top:10px;text-align:center}
+
+.dt-right{background:#1d2026;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:12px}
+.wallet{background:#14161b;border:1px solid #2a2f3a;border-radius:8px;padding:10px}
+.wallet .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #2a2f3a}
+.wallet .row:last-child{border-bottom:0}
+.open-bets{background:#14161b;border:1px solid #2a2f3a;border-radius:8px}
+.open-bets .title{padding:10px 12px;border-bottom:1px solid #2a2f3a;font-weight:700}
+.open-bets .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:8px 12px;color:#9aa3b2}
+.open-bets .empty{padding:18px 12px;text-align:center;color:#9aa3b2}
+
+@media (max-width:1200px){
+  .dt-wrapper{grid-template-columns:1fr;}
+  .dt-left,.dt-right{display:none}
+}
+
+
+

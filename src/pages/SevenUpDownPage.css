@@ -1,0 +1,65 @@
+.sevenup-container{padding:24px;max-width:1200px;margin:0 auto;color:#e6e6e6}
+.sevenup-header h1{margin:0 0 6px;font-size:28px;color:#fff}
+.sevenup-header p{margin:0 0 20px;color:#b8c1cc}
+
+.sevenup-panel{display:grid;grid-template-columns:1.2fr 1fr;gap:20px}
+@media(max-width:900px){.sevenup-panel{grid-template-columns:1fr}}
+
+/* Controls */
+.sevenup-controls{background:linear-gradient(180deg,rgba(28,34,45,.8),rgba(18,22,30,.9));border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px}
+.options{display:flex;gap:12px;margin-bottom:14px}
+.option{flex:1;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#dfe7ef;cursor:pointer;transition:.2s}
+.option:hover{background:rgba(255,255,255,.07);transform:translateY(-1px)}
+.option.selected{box-shadow:0 0 0 2px rgba(108,148,255,.5) inset;background:linear-gradient(180deg,rgba(80,120,220,.25),rgba(20,30,50,.25))}
+.option.up{border-left:3px solid #3bd671}
+.option.seven{border-left:3px solid #ffcc33}
+.option.down{border-left:3px solid #ff5e6a}
+
+.bet-row{display:flex;gap:10px;align-items:center}
+.bet-row label{color:#c9d3df}
+.bet-row input{width:140px;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:#0f141b;color:#f0f4f8}
+.play-button{padding:10px 16px;border-radius:8px;background:#4361ee;border:1px solid #4361ee;color:#fff;font-weight:600;cursor:pointer;transition:.2s}
+.play-button:hover{filter:brightness(1.1)}
+
+/* Result / table area */
+.sevenup-result{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,rgba(28,34,45,.9),rgba(12,16,22,.95));border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:center;min-height:320px}
+.sevenup-table{position:relative;width:100%;max-width:720px;aspect-ratio:16/7;background:linear-gradient(180deg,#1e2937,#0e1520);border-radius:16px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.04), 0 12px 24px rgba(0,0,0,.35);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:18px}
+
+.slot{border:1px dashed rgba(255,255,255,.18);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#a7b4c6;font-weight:700;letter-spacing:.5px;text-transform:uppercase;position:relative}
+.slot.up{outline:2px solid rgba(59,214,113,.25)}
+.slot.seven{outline:2px solid rgba(255,204,51,.25)}
+.slot.down{outline:2px solid rgba(255,94,106,.25)}
+
+/* Card anim */
+.deal-area{position:absolute;left:50%;top:-24px;transform:translateX(-50%)}
+.card{width:90px;height:128px;border-radius:12px;background:#fff;color:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3);backface-visibility:hidden;transform-style:preserve-3d;transition:transform .6s ease}
+.card .rank{font-size:44px;font-weight:700}
+.card .suit{font-size:18px}
+
+.card.move-up{animation:moveUp .45s ease forwards}
+.card.move-seven{animation:moveSeven .45s ease forwards}
+.card.move-down{animation:moveDown .45s ease forwards}
+
+@keyframes moveUp{to{transform:translate(-180px,120px)}}
+@keyframes moveSeven{to{transform:translate(0px,120px)}}
+@keyframes moveDown{to{transform:translate(180px,120px)}}
+
+/* Flip to reveal */
+.card.flip{transform:rotateY(180deg)}
+
+/* Winner toast */
+.toast{position:absolute;right:16px;bottom:16px;background:rgba(26,36,52,.9);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;color:#eaf0f7;display:flex;gap:8px;align-items:center}
+.toast.win{border-left:4px solid #3bd671}
+.toast.lose{border-left:4px solid #ff5e6a}
+
+/* Old static summary card */
+.result-card{display:flex;gap:16px}
+.card-face{width:130px;height:180px;border-radius:12px;background:#fff;color:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.card-rank{font-size:56px;line-height:1;font-weight:700}
+.card-suit{font-size:22px}
+.result-info{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center}
+.result-info .row span{color:#9aa6b2}
+.result-info .row strong{color:#e9eef5}
+.result-info .row.total strong{color:#3bd671}
+.result-card.win .card-face{outline:3px solid #3bd671}
+.result-card.lose .card-face{outline:3px solid #ff5e6a}

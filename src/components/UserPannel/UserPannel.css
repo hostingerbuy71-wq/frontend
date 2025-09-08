@@ -1,0 +1,131 @@
+:root{
+  --bg: #0f1419; /* match admin background */
+  --card: #1a1f2e; /* admin primary card */
+  --card-2: #2a2f3e; /* admin secondary surface */
+  --muted: #8a8d91; /* admin muted text */
+  --border: #2a2f3e; /* admin border color */
+  --pos: #26d07c;
+  --neg: #ff5d5d;
+  --pending: #f4b84a;
+  --txt: #e7ecf3;
+  --primary: #667eea; /* admin accent */
+}
+
+.userdash-bg{
+  background: var(--bg);
+}
+
+.userdash-bg .card,
+.userdash-bg .card.bg-dark{ background: var(--card); border-color: var(--border); }
+
+.transactions-card .card-header{ border-bottom: 1px solid var(--border); }
+
+.transactions-list{ width: 100%; }
+.tx-row{
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border);
+  background: var(--card-2);
+}
+.tx-row:hover{ background: #222838; }
+
+.tx-left{ display: flex; align-items: center; gap: 12px; min-width: 0; }
+.tx-icon{ width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; font-size: 16px; }
+.tx-icon.pos{ background: rgba(38,208,124,.12); color: var(--pos); }
+.tx-icon.neg{ background: rgba(255,93,93,.12); color: var(--neg); }
+
+.tx-details{ min-width: 0; }
+.tx-title{ color: var(--txt); font-weight: 600; }
+.tx-sub{ color: var(--muted); font-size: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+.tx-sub .muted{ color: var(--muted); }
+
+.tx-right{ text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.tx-amount{ font-weight: 700; }
+.tx-amount.pos{ color: var(--pos); }
+.tx-amount.neg{ color: var(--neg); }
+
+.pill{ font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 600; letter-spacing: .2px; }
+.pill.completed{ background: rgba(38,208,124,.14); color: var(--pos); }
+.pill.pending{ background: rgba(244,184,74,.16); color: var(--pending); }
+.pill.failed{ background: rgba(255,93,93,.16); color: var(--neg); }
+
+.tx-footer{ border-top: 1px solid var(--border); background: var(--card); }
+
+/* Payment method */
+.pm-section h4{ font-weight: 700; }
+.pm-card{ border: 1px solid var(--border); background: var(--card-2); transition: border-color .2s, background .2s; }
+.pm-card:hover{ border-color: #3a3f4e; background: #2a3242; }
+.pm-card.selected{ border-color: var(--primary); box-shadow: 0 0 0 2px rgba(102,126,234,.25) inset; }
+.pm-card .form-check-input{ width: 18px; height: 18px; }
+
+.btn-continue{ background: var(--primary); border: none; box-shadow: 0 6px 18px rgba(102,126,234,.25); }
+.btn-continue:hover{ filter: brightness(1.05); }
+
+.btn-muted{ background: #2a3142; border: none; color: var(--txt); }
+.btn-muted:hover{ background: #343c51; }
+
+@media (max-width: 576px){
+  .tx-row{ padding: 12px 14px; }
+  .tx-icon{ width: 32px; height: 32px; font-size: 14px; }
+}
+
+.userdash-wrap{
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto; /* center */
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 992px){
+  .userdash-wrap{ max-width: 92%; padding-left: 0; padding-right: 0; }
+}
+
+/* Transactions header alignment fix if needed */
+.transactions-card .card-header h5{ font-weight: 700; }
+
+/* Adjust cards radius and depth */
+.userdash-bg .card{ border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+
+/* Responsive wrap */
+@media (max-width: 992px){
+  .userdash-wrap{ max-width: 92%; }
+}
+
+/* Fine tune paddings */
+/* Transactions header tweaks to match reference */
+.transactions-card .card-header{ padding: 12px 20px; background: var(--card); border-bottom: 1px solid rgba(255,255,255,.12); }
+
+/* Row sizing, divider and background to match screenshot */
+.tx-row{ padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.12); background: var(--card-2); }
+
+/* Typography tuning */
+.tx-details .tx-title{ font-size: 16px; font-weight: 600; letter-spacing: .2px; }
+.tx-sub{ font-size: 12px; line-height: 1.2; }
+.tx-right{ gap: 8px; }
+.tx-amount{ font-size: 16px; font-weight: 700; }
+
+/* Icon chips contrast closer to ref */
+.tx-icon.pos{ background: rgba(38,208,124,.16); }
+.tx-icon.neg{ background: rgba(255,93,93,.16); }
+
+/* Status pills exactly like ref */
+.pill{ font-size: 12px; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+.pill.complete, .pill.completed{ background: rgba(38,208,124,.18); color: var(--pos); }
+.pill.pending{ background: rgba(244,184,74,.18); color: var(--pending); }
+.pill.failed{ background: rgba(255,93,93,.18); color: var(--neg); }
+
+/* Footer and pagination styling */
+.tx-footer{ border-top: 1px solid rgba(255,255,255,.12); background: var(--card); }
+.userdash-pagination .page-item .page-link{ padding: 6px 12px; border-radius: 8px; background: var(--card-2); border: 1px solid rgba(255,255,255,.15); color: var(--txt); }
+.userdash-pagination .page-item.active .page-link{ background: #2962ff; border-color: #2962ff; color: #fff; }
+.userdash-pagination .page-item + .page-item{ margin-left: 8px; }
+.userdash-bg{ position: relative; }
+.userdash-bg::before{
+  content: none; /* remove grid watermark to match admin design */
+}
+.userdash-wrap{ position: relative; z-index: 1; }
+
+/* Support both 'completed' and 'complete' class names */
+.pill.completed, .pill.complete{ background: rgba(38,208,124,.14); color: var(--pos); }

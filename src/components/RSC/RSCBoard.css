@@ -1,0 +1,14 @@
+.rsc-board{display:flex;flex-direction:column;gap:12px}.rsc-header{display:flex;justify-content:space-between;align-items:center;background:#0c0f14;color:#fff;padding:10px 14px;border-radius:6px;border:1px solid #1b2230}.rsc-header h2{margin:0;font-size:18px;letter-spacing:.5px}.rsc-header-actions .btn{background:#1b2230;color:#cdd6f4;border:1px solid #2a3345;border-radius:4px;padding:6px 10px;margin-left:6px;cursor:pointer}.rsc-header-actions .btn.small{font-size:12px}
+.rsc-table{border:1px solid #1b2230;border-radius:6px;overflow:hidden}
+.rsc-table-head{display:grid;grid-template-columns:220px 1fr repeat(6,90px);background:#0c0f14;color:#98a2b3;font-weight:600;border-bottom:1px solid #1b2230}
+.rsc-table-head .col{padding:10px 12px;border-right:1px solid #1b2230}
+.rsc-table-body .rsc-row{display:grid;grid-template-columns:220px 1fr repeat(6,90px);border-bottom:1px solid #1b2230;background:#0f131a}
+.rsc-row .col{padding:10px 12px;border-right:1px solid #1b2230;display:flex;align-items:center}
+.col-competition .competition-name{font-weight:600;color:#e2e8f0}
+.col-competition .event-time{font-size:12px;color:#94a3b8;margin-top:4px}
+.col-event .teams{display:flex;gap:6px;color:#e2e8f0}
+.col-event .vs{opacity:.6}
+.col-market.back{background:#ccebf6;color:#0b4a6f;justify-content:center;font-weight:700}
+.col-market.lay{background:#f6ccd0;color:#6f0b1e;justify-content:center;font-weight:700}
+@media (max-width: 1200px){.rsc-table-head,.rsc-table-body .rsc-row{grid-template-columns:160px 1fr repeat(6,76px)}}
+@media (max-width: 900px){.rsc-table-head,.rsc-table-body .rsc-row{grid-template-columns:140px 1fr repeat(6,68px)}}
