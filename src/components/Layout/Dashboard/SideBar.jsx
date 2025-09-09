@@ -114,7 +114,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
       }
       throw new Error('Empty soccer list');
     } catch (error) {
-      console.error('❌ Soccer API Error:', error.message);
+      console.error(' Soccer API Error:', error.message);
       const demoMatches = [
         { id: 'demo_1', display: '🔴 DEMO: Manchester United vs Liverpool', status: 'Live', tournament: 'Premier League' },
         { id: 'demo_2', display: '🔴 DEMO: Barcelona vs Real Madrid', status: 'Upcoming', tournament: 'La Liga' },

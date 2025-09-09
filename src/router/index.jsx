@@ -108,7 +108,7 @@ const router = createBrowserRouter([
 
       
       {
-        path: "`games/seven-updown",
+        path: "games/seven-updown",
         element: <SevenUpDownPage />,
 
       },
@@ -116,15 +116,15 @@ const router = createBrowserRouter([
 
       
       {
-        path: "/games/roulette",
+        path: "games/roulette",
         element: <RoulettePage />,
       },
       {
-        path: "/games/teen-patti",
+        path: "games/teen-patti",
         element: <BPExchRSCPage initialId={900003} />,
       },
       {
-        path: "/games/dragon-tiger",
+        path: "games/dragon-tiger",
         element: <DragonTigerPage />,
       },
     ],
