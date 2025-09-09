@@ -97,6 +97,7 @@ const router = createBrowserRouter([
         element: <DashBoardContentPage />,
       },
       {
+        
         path: "galaxy-casino",
         element: <DashBoardContentPage />,
       },
