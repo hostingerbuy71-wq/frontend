@@ -4,7 +4,7 @@ import { Offcanvas, ListGroup } from "react-bootstrap";
 import { PiSoccerBallBold } from "react-icons/pi";
 import { FaMoneyBills, FaAngleDown, FaAngleRight } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import './SideBar.css'
+import './Sidebar.css'
 import swapLogo from "../../../assets/logos/Group 2.png";
 import TennisIcon from "@/assets/icons/tennis.png";
 import CricketIcons from "../../../assets/icons/cricket.png";
