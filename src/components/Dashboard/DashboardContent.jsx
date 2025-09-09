@@ -55,7 +55,7 @@ export const DashboardContent = () => {
         <div className="table-wrap d-flex gap-4">
           <div
             className="table-box-header d-flex gap-4"
-            style={{ display: "flex", gap: "30px",backgroundColor:"green" }}
+            style={{ display: "flex", gap: "30px" }}
           >
             <span>Credit: 0</span>
             <span className="runrate">Balance: 1,000</span>
