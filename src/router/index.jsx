@@ -105,10 +105,12 @@ const router = createBrowserRouter([
         path: "current-position",
         element: <DashBoardContentPage />,
       },
+
+      
       {
         path: "/games/seven-updown",
         element: <SevenUpDownPage />,
-        
+
       },
 
 
