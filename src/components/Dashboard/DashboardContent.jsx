@@ -1,33 +1,38 @@
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useState } from "react";
+
+// Swiper
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+
+// Assets
 import Slide1 from "../../assets/sperateimg/slide1.png";
 import Slide2 from "../../assets/sperateimg/slide2.png";
 import Slide3 from "../../assets/sperateimg/slide3.png";
 import Slide4 from "../../assets/sperateimg/slide4.png";
-
 import Slide5 from "../../assets/sperateimg/slide5.png";
-
 import Slide6 from "../../assets/sperateimg/slide6.png";
 import Slide7 from "../../assets/sperateimg/slide7.png";
 
-import SevenUpDown from '../../assets/sperateimg/7up-down.png'
-import Rouletee from '../../assets/sperateimg/rouletee.png'
-import TeenPatti from '../../assets/sperateimg/teen-patti.png'
-import Beccarat from '../../assets/sperateimg/baccarat.png'
-import DragonTiger from '../../assets/sperateimg/dragontiger.png'
-import CricketWar from '../../assets/sperateimg/criketwar.png'
-
-import { Autoplay, Navigation } from "swiper/modules";
-import "swiper/css";
+import SevenUpDown from "../../assets/sperateimg/7up-down.png";
+import Rouletee from "../../assets/sperateimg/rouletee.png";
+import TeenPatti from "../../assets/sperateimg/teen-patti.png";
+import Beccarat from "../../assets/sperateimg/baccarat.png";
+import DragonTiger from "../../assets/sperateimg/dragontiger.png";
+import CricketWar from "../../assets/sperateimg/criketwar.png";
 
 import HoreseBlack from "../../assets/sperateimg/horse-black.png";
-
 import BlackHound from "../../assets/sperateimg/blackhound.png";
+
 import AlarmIcon from "../../assets/sperateimg/alarmIcon.png";
 import BlackCricket from "@/assets/sperateimg/cricketBlack.png";
 import BlackTennis from "@/assets/sperateimg/blackRocket.png";
 import BlackSoccer from "@/assets/sperateimg/blackSoccer.png";
 import BlackSportBook from "@/assets/sperateimg/blackSportBook.png";
+
 export const DashboardContent = () => {
+  const [selected, setSelected] = useState("inplay");
+
   const products = [
     TeenPatti,
     SevenUpDown,
@@ -49,8 +54,18 @@ export const DashboardContent = () => {
     { time: "7:35 PM", slideName: "Durbanville (ZA)" },
     { time: "8:40 PM", slideName: "Bath (GB)" },
   ];
+
+  const sports = [
+    { id: "inplay", label: "Inplay", icon: AlarmIcon, bg: "#F04141" },
+    { id: "cricket", label: "Cricket", icon: BlackCricket, bg: "#D9D9D9" },
+    { id: "tennis", label: "Tennis", icon: BlackTennis, bg: "#D9D9D9" },
+    { id: "soccer", label: "Soccer", icon: BlackSoccer, bg: "#D9D9D9" },
+    { id: "sportsbook", label: "Sports Book", icon: BlackSportBook, bg: "#D9D9D9" },
+  ];
+
   return (
     <div className="w-100 bg-white h-100">
+      {/* Wallet Info */}
       <div className="left-content" id="cust-wallet">
         <div className="table-wrap d-flex gap-4">
           <div
@@ -65,6 +80,7 @@ export const DashboardContent = () => {
         </div>
       </div>
 
+      {/* Slider 1 */}
       <div className="barely-slider h-100">
         <Swiper
           spaceBetween={10}
@@ -81,25 +97,11 @@ export const DashboardContent = () => {
           modules={[Autoplay, Navigation]}
           centeredSlides={false}
           breakpoints={{
-            320: {
-              slidesPerView: 1,
-              spaceBetween: 10,
-            },
-            576: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-
-            1024: {
-              slidesPerView: 4,
-            },
-
-            1200: {
-              slidesPerView: 5,
-            },
+            320: { slidesPerView: 1, spaceBetween: 10 },
+            576: { slidesPerView: 2, spaceBetween: 10 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
+            1200: { slidesPerView: 5 },
           }}
         >
           {products.map((product, index) => (
@@ -115,18 +117,18 @@ export const DashboardContent = () => {
                 src={product}
                 alt="ada"
                 className="ratio-1x1 object-cover img-position-center img-fluid"
-                style={{width:"210px"}}
+                style={{ width: "210px" }}
               />
             </SwiperSlide>
           ))}
-          <div className="swiper-button-next">{/* <BsChevronRight /> */}</div>
-          <div className="swiper-button-prev">{/* <BsChevronLeft /> */}</div>
+          <div className="swiper-button-next"></div>
+          <div className="swiper-button-prev"></div>
         </Swiper>
       </div>
 
+      {/* Horse Race */}
       <div className="d-flex align-items-center gap-3">
         <img src={HoreseBlack} alt="dad" />
-
         <h5>Horse Race</h5>
       </div>
       <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
@@ -145,36 +147,15 @@ export const DashboardContent = () => {
           modules={[Autoplay, Navigation]}
           centeredSlides={false}
           breakpoints={{
-            320: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            576: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 4,
-            },
-
-            1024: {
-              slidesPerView: 5,
-            },
-
-            1200: {
-              slidesPerView: 6,
-            },
+            320: { slidesPerView: 2, spaceBetween: 10 },
+            576: { slidesPerView: 3, spaceBetween: 10 },
+            768: { slidesPerView: 4 },
+            1024: { slidesPerView: 5 },
+            1200: { slidesPerView: 6 },
           }}
         >
           {timeSchedule.map((product, index) => (
-            <SwiperSlide
-              key={index}
-              style={{
-                // display: "",
-                width: "215px",
-                // justifyContent: "center",
-              }}
-            >
+            <SwiperSlide key={index} style={{ width: "215px" }}>
               <div
                 className="d-flex flex-column justify-content-center text-center"
                 style={{ borderLeft: "1px solid #fff" }}
@@ -184,14 +165,12 @@ export const DashboardContent = () => {
               </div>
             </SwiperSlide>
           ))}
-          <div className="swiper-button-next">{/* <BsChevronRight /> */}</div>
-          <div className="swiper-button-prev">{/* <BsChevronLeft /> */}</div>
         </Swiper>
       </div>
 
+      {/* Greyhound */}
       <div className="d-flex align-items-center gap-3">
         <img src={BlackHound} alt="dad" />
-
         <h5>Greyhound</h5>
       </div>
       <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
@@ -210,36 +189,15 @@ export const DashboardContent = () => {
           modules={[Autoplay, Navigation]}
           centeredSlides={false}
           breakpoints={{
-            320: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            576: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            768: {
-              slidesPerView: 4,
-            },
-
-            1024: {
-              slidesPerView: 5,
-            },
-
-            1200: {
-              slidesPerView: 6,
-            },
+            320: { slidesPerView: 2, spaceBetween: 10 },
+            576: { slidesPerView: 3, spaceBetween: 10 },
+            768: { slidesPerView: 4 },
+            1024: { slidesPerView: 5 },
+            1200: { slidesPerView: 6 },
           }}
         >
           {timeSchedule.map((product, index) => (
-            <SwiperSlide
-              key={index}
-              style={{
-                // display: "",
-                width: "215px",
-                // justifyContent: "center",
-              }}
-            >
+            <SwiperSlide key={index} style={{ width: "215px" }}>
               <div
                 className="d-flex flex-column justify-content-center text-center"
                 style={{ borderLeft: "1px solid #fff" }}
@@ -249,167 +207,232 @@ export const DashboardContent = () => {
               </div>
             </SwiperSlide>
           ))}
-          <div className="swiper-button-next">{/* <BsChevronRight /> */}</div>
-          <div className="swiper-button-prev">{/* <BsChevronLeft /> */}</div>
         </Swiper>
       </div>
 
+      {/* Sports Menu */}
       <div className="w-100 py-2 d-flex gap-3">
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "#F04141",
-            width: "65px",
-            height: "65px",
-            borderRadius: "5px",
-          }}
-        >
-          <div className="text-center">
-            <img
-              src={AlarmIcon}
-              alt="jjdk"
-              width={30}
-              className=""
-              height={30}
-            />
-            <div className="text-white">Inplay</div>
-          </div>
-        </div>
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "#D9D9D9",
-            width: "65px",
-            height: "65px",
-            borderRadius: "5px",
-          }}
-        >
-          <div className="text-center">
-            <img
-              src={BlackCricket}
-              alt="jjdk"
-              width={30}
-              className=""
-              height={30}
-            />
-            <div className="text-black">Cricket</div>
-          </div>
-        </div>
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "#D9D9D9",
-            width: "65px",
-            height: "65px",
-            borderRadius: "5px",
-          }}
-        >
-          <div className="text-center">
-            <img
-              src={BlackTennis}
-              alt="jjdk"
-              width={30}
-              className=""
-              height={30}
-            />
-            <div className="text-black">Tennis</div>
-          </div>
-        </div>
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "#D9D9D9",
-            width: "65px",
-            height: "65px",
-            borderRadius: "5px",
-          }}
-        >
-          <div className="text-center">
-            <img
-              src={BlackSoccer}
-              alt="jjdk"
-              width={30}
-              className=""
-              height={30}
-            />
-            <div className="text-black">Soccer</div>
-          </div>
-        </div>
-
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: "#D9D9D9",
-            width: "65px",
-            height: "65px",
-            borderRadius: "5px",
-          }}
-        >
-          <div className="text-center">
-            <img
-              src={BlackSportBook}
-              alt="jjdk"
-              width={30}
-              className=""
-              height={30}
-            />
-            <div className="text-black lh-sm">Sports Book</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-        <div className="row">
-          <div className="col-md-5">
-            <div className="d-flex">
-              <img src={BlackCricket} alt="jjd" width={20} height={20} />
-              <h5>Cricket</h5>
-            </div>
-          </div>
-
-          <div className="col-md-7">
-            <div className="row">
-              <div className="col-md-3">Matched</div>
-              <div className="col-md-3">1</div>
-              <div className="col-md-3">X</div>
-              <div className="col-md-3">2</div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className=" d-flex align-items-center gap-4"
-          style={{ backgroundColor: "#ffff" }}
-        >
+        {sports.map((sport) => (
           <div
+            key={sport.id}
+            onClick={() => setSelected(sport.id)}
             className="d-flex justify-content-center align-items-center"
             style={{
-              backgroundColor: "#F04141",
-              width: "60px",
-              height: "60px",
+              backgroundColor: selected === sport.id ? "#F04141" : sport.bg,
+              width: "65px",
+              height: "65px",
+              borderRadius: "5px",
+              cursor: "pointer",
             }}
           >
-            <div className="text-center text-white">
-              <div>Inplay</div>
-              <div>1:45PM</div>
+            <div className="text-center">
+              <img src={sport.icon} alt={sport.label} width={30} height={30} />
+              <div
+                className={selected === sport.id ? "text-white" : "text-black"}
+              >
+                {sport.label}
+              </div>
             </div>
           </div>
-          <div className="text-bold" style={{ fontWeight: "bold" }}>
-            Zimbabwe v Sri Lanka
-          </div>
+        ))}
+      </div>
+
+      {/* Dynamic Details Section */}
+    {selected === "cricket" && (
+  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+    <div className="row">
+      <div className="col-md-5">
+        <div className="d-flex">
+          <img src={BlackCricket} alt="cricket" width={20} height={20} />
+          <h5 className="ms-2">Cricket</h5>
         </div>
       </div>
 
-      <div className="row">
-        <div className="col-md-5">
-          <div>
-            <div>
-              <img src={BlackSoccer} alt="jadj" />
-            </div>
-            <div>FootBall</div>
-          </div>
+      <div className="col-md-7">
+        <div className="row">
+          <div className="col-md-3">Matched</div>
+          <div className="col-md-3">1</div>
+          <div className="col-md-3">X</div>
+          <div className="col-md-3">2</div>
         </div>
       </div>
+    </div>
+
+    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          backgroundColor: "#F04141",
+          width: "60px",
+          height: "60px",
+        }}
+      >
+        <div className="text-center text-white">
+          <div>Inplay</div>
+          <div>1:45PM</div>
+        </div>
+      </div>
+      <div className="fw-bold">Zimbabwe v Sri Lanka</div>
+    </div>
+  </div>
+)}
+
+{selected === "tennis" && (
+  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+    <div className="row">
+      <div className="col-md-5">
+        <div className="d-flex">
+          <img src={BlackTennis} alt="tennis" width={20} height={20} />
+          <h5 className="ms-2">Tennis</h5>
+        </div>
+      </div>
+
+      <div className="col-md-7">
+        <div className="row">
+          <div className="col-md-3">Set</div>
+          <div className="col-md-3">Player A</div>
+          <div className="col-md-3">Player B</div>
+          <div className="col-md-3">Score</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          backgroundColor: "#198754",
+          width: "60px",
+          height: "60px",
+        }}
+      >
+        <div className="text-center text-white">
+          <div>Live</div>
+          <div>2nd Set</div>
+        </div>
+      </div>
+      <div className="fw-bold">Nadal v Djokovic</div>
+    </div>
+  </div>
+)}
+
+{selected === "soccer" && (
+  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+    <div className="row">
+      <div className="col-md-5">
+        <div className="d-flex">
+          <img src={BlackSoccer} alt="soccer" width={20} height={20} />
+          <h5 className="ms-2">Soccer</h5>
+        </div>
+      </div>
+
+      <div className="col-md-7">
+        <div className="row">
+          <div className="col-md-3">Time</div>
+          <div className="col-md-3">Home</div>
+          <div className="col-md-3">Draw</div>
+          <div className="col-md-3">Away</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          backgroundColor: "#0d6efd",
+          width: "60px",
+          height: "60px",
+        }}
+      >
+        <div className="text-center text-white">
+          <div>Live</div>
+          <div>75'</div>
+        </div>
+      </div>
+      <div className="fw-bold">Barcelona v Real Madrid</div>
+    </div>
+  </div>
+)}
+
+{selected === "sportsbook" && (
+  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+    <div className="row">
+      <div className="col-md-5">
+        <div className="d-flex">
+          <img src={BlackSportBook} alt="sportsbook" width={20} height={20} />
+          <h5 className="ms-2">Sports Book</h5>
+        </div>
+      </div>
+
+      <div className="col-md-7">
+        <div className="row">
+          <div className="col-md-3">Event</div>
+          <div className="col-md-3">Type</div>
+          <div className="col-md-3">Odds</div>
+          <div className="col-md-3">Market</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          backgroundColor: "#6c757d",
+          width: "60px",
+          height: "60px",
+        }}
+      >
+        <div className="text-center text-white">
+          <div>Bet</div>
+          <div>Open</div>
+        </div>
+      </div>
+      <div className="fw-bold">Super Bowl Winner 2025</div>
+    </div>
+  </div>
+)}
+
+{selected === "inplay" && (
+  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+    <div className="row">
+      <div className="col-md-5">
+        <div className="d-flex">
+          <img src={AlarmIcon} alt="inplay" width={20} height={20} />
+          <h5 className="ms-2">Inplay</h5>
+        </div>
+      </div>
+
+      <div className="col-md-7">
+        <div className="row">
+          <div className="col-md-3">Game</div>
+          <div className="col-md-3">Status</div>
+          <div className="col-md-3">Score</div>
+          <div className="col-md-3">Time</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          backgroundColor: "#dc3545",
+          width: "60px",
+          height: "60px",
+        }}
+      >
+        <div className="text-center text-white">
+          <div>Live</div>
+          <div>Running</div>
+        </div>
+      </div>
+      <div className="fw-bold">India v Australia (Cricket)</div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
