@@ -48,7 +48,7 @@ export const RoyalStarCasinoComponent = () => {
   }, []);
 
   const getGameHref = (gameId) => {
-    if (gameId === 900001) return '/games/7updown';
+    if (gameId === 900001) return '/games/seven-updown';
     if (gameId === 900002) return '/games/roulette';
     if (gameId === 900003) return '/games/teen-patti';
     if (gameId === 900004) return '/games/dragon-tiger';
