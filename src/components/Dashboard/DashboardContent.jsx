@@ -100,8 +100,8 @@ export const DashboardContent = () => {
             320: { slidesPerView: 1, spaceBetween: 10 },
             576: { slidesPerView: 2, spaceBetween: 10 },
             768: { slidesPerView: 3 },
-            1024: { slidesPerView: 4 },
-            1200: { slidesPerView: 5 },
+            1024: { slidesPerView: 4},
+            1200: { slidesPerView: 4 },
           }}
         >
           {products.map((product, index) => (
@@ -110,6 +110,8 @@ export const DashboardContent = () => {
               style={{
                 display: "flex",
                 width: "215px",
+            height:"220px",
+            objectFit:"contain",
                 justifyContent: "center",
               }}
             >
@@ -117,7 +119,7 @@ export const DashboardContent = () => {
                 src={product}
                 alt="ada"
                 className="ratio-1x1 object-cover img-position-center img-fluid"
-                style={{ width: "210px" }}
+                style={{ width: "220px" }}
               />
             </SwiperSlide>
           ))}
