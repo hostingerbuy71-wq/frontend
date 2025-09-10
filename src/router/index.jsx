@@ -51,10 +51,10 @@ const router = createBrowserRouter([
         path: "soccer",
         element: <DashBoardContentPage />,
       },
-        {
-        path: "royal-star-casino",
-        element: <DashBoardContentPage />,
-      },
+      //   {
+      //   path: "royal-star-casino",
+      //   element: <DashBoardContentPage />,
+      // },
       {
         path: "tennis",
         element: <DashBoardContentPage />,
