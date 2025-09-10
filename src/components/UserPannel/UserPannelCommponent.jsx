@@ -30,7 +30,7 @@ export default function UserDashboardComponent() {
     <Container fluid className="userdash-bg min-vh-100 text-light py-5">
       <div className="userdash-wrap">
         {/* Transactions */}
-        <Card bg="dark" text="light" className="mb-5 shadow transactions-card">
+        <Card bg="dark" text="light" className="mb-5 shadow transactions-card w-100">
           <Card.Header className="d-flex justify-content-between align-items-center">
             <h5 className="mb-0 text-white">Recent Transactions</h5>
             <small className="text-muted">Showing 1–10 of 156 transactions</small>
