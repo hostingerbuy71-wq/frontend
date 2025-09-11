@@ -198,7 +198,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
       icon: <PiSoccerBallBold size={20} />, 
       link: "/soccer",
       hasSubMenu: true,
-      subMenuItems: soccerMatches.map(match => match.display),
+      subMenuItems: soccerMatches,
       loading: loadingSoccer
     },
     { 
@@ -214,7 +214,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
       icon: <img src={CricketIcons} alt="Cricket" width={20} height={20} />, 
       link: "/cricket", 
       hasSubMenu: true, 
-      subMenuItems: cricketMatches.map(match => match.display),
+      subMenuItems: cricketMatches,
       loading: loadingCricket
     },
     { 
@@ -222,7 +222,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
       icon: <img src={HorseRace} alt="Horse Race" width={20} height={20} />, 
       link: "/horse-race", 
       hasSubMenu: true, 
-      subMenuItems: horseRaces.map(race => race.display),
+      subMenuItems: horseRaces,
       loading: loadingHorse
     },
     { 
@@ -230,7 +230,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
       icon: <img src={DogIcon} alt="Grayhound" width={20} height={20} />, 
       link: "/gray-hound", 
       hasSubMenu: true, 
-      subMenuItems: greyhoundRaces.map(race => race.display),
+      subMenuItems: greyhoundRaces,
       loading: loadingGreyhound
     },
     { 
@@ -308,16 +308,19 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
     }
   };
 
-  const handleMatchClick = (matchId) => {
-    // For tennis matches, find the complete match object
-    if (selectedSport?.name === "Tennis") {
-      const fullMatch = tennisTournaments.find(match => match.id === matchId);
-      setSelectedMatch(fullMatch || matchId);
+  const handleMatchClick = (matchItem) => {
+    if (typeof matchItem === 'object' && matchItem) {
+      setSelectedMatch(matchItem);
     } else {
-      setSelectedMatch(matchId);
+      // Fallback if only a string was provided
+      setSelectedMatch({ display: String(matchItem) });
     }
     setShowMatchDetails(true);
     setShowSubMenu(false);
+    // Ensure sidebar closes on mobile so details can take full width
+    if (screenSize === 'mobile' && isSidebarOpen) {
+      try { toggleSidebar(); } catch (e) { /* noop */ }
+    }
   };
 
   const closeMatchDetails = () => {
@@ -415,70 +418,139 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
 
       {/* Right Sub-menu Panel */}
       {showSubMenu && selectedSport && (
-        <div
-          className="position-fixed bg-dark text-white"
-          style={{
-            left: "200px",
-            top: 0,
-            width: "300px",
-            height: "100vh",
-            zIndex: 1098,
-            padding: "20px",
-            overflowY: "auto"
-          }}
-        >
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="mb-0">{selectedSport.name}</h5>
-            <button
-              className="btn btn-sm btn-outline-light"
-              onClick={() => {
-                setShowSubMenu(false);
-                setSelectedSport(null);
-                setOpenDropdown(null);
-              }}
-            >
-              ×
-            </button>
-          </div>
-          <div className="border-top pt-3">
-            {selectedSport.loading && selectedSport.name === "Tennis" ? (
-              <div className="text-center py-3">
-                <div className="spinner-border spinner-border-sm text-light" role="status">
-                  <span className="visually-hidden">Loading...</span>
+        screenSize === 'mobile' ? (
+          <div
+            className="position-fixed bg-dark text-white"
+            style={{
+              left: 0,
+              top: 0,
+              width: "100vw",
+              height: "60vh",
+              zIndex: 1300,
+              padding: "16px",
+              overflowY: "auto",
+              borderBottom: "1px solid rgba(255,255,255,0.2)",
+              boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+            }}
+          >
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="mb-0">{selectedSport.name}</h5>
+              <button
+                className="btn btn-sm btn-outline-light"
+                onClick={() => {
+                  setShowSubMenu(false);
+                  setSelectedSport(null);
+                  setOpenDropdown(null);
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <div className="border-top pt-3">
+              {selectedSport.loading && selectedSport.name === "Tennis" ? (
+                <div className="text-center py-3">
+                  <div className="spinner-border spinner-border-sm text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <p className="mt-2 mb-0 small">Loading matches...</p>
                 </div>
-                <p className="mt-2 mb-0 small">Loading matches...</p>
-              </div>
-            ) : (
-              selectedSport.subMenuItems?.map((item, index) => (
-                <div
-                  key={index}
-                  className="py-2 px-3 mb-2 bg-secondary rounded cursor-pointer hover-bg-primary"
-                  style={{ cursor: 'pointer', transition: 'background-color 0.2s' }}
-                  onClick={() => handleMatchClick(selectedSport.name === "Tennis" && typeof item === 'object' ? item.id : item)}
-                >
-                  {selectedSport.name === "Tennis" && typeof item === 'object' ? (
-                    <div>
-                      <div className="fw-bold text-white" style={{ fontSize: '14px' }}>
-                        {item.display}
+              ) : (
+                selectedSport.subMenuItems?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="py-2 px-3 mb-2 bg-secondary rounded cursor-pointer hover-bg-primary"
+                    style={{ cursor: 'pointer', transition: 'background-color 0.2s' }}
+                    onClick={() => handleMatchClick(item)}
+                  >
+                    {typeof item === 'object' ? (
+                      <div>
+                        <div className="fw-bold text-white" style={{ fontSize: '14px' }}>
+                          {item.display}
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center mt-1">
+                          <small className="text-light opacity-75">{item.tournament}</small>
+                          <span className={`badge ${
+                            item.status === 'Live' ? 'bg-danger' : 
+                            item.status === 'Upcoming' ? 'bg-warning text-dark' : 'bg-success'
+                          }`} style={{ fontSize: '10px' }}>
+                            {item.status}
+                          </span>
+                        </div>
                       </div>
-                      <div className="d-flex justify-content-between align-items-center mt-1">
-                        <small className="text-light opacity-75">{item.tournament}</small>
-                        <span className={`badge ${
-                          item.status === 'Live' ? 'bg-danger' : 
-                          item.status === 'Upcoming' ? 'bg-warning text-dark' : 'bg-success'
-                        }`} style={{ fontSize: '10px' }}>
-                          {item.status}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-white">{item}</div>
-                  )}
-                </div>
-              ))
-            )}
+                    ) : (
+                      <div className="text-white">{item}</div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div
+            className="position-fixed bg-dark text-white"
+            style={{
+              left: "200px",
+              top: 0,
+              width: "300px",
+              height: "100vh",
+              zIndex: 1098,
+              padding: "20px",
+              overflowY: "auto"
+            }}
+          >
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="mb-0">{selectedSport.name}</h5>
+              <button
+                className="btn btn-sm btn-outline-light"
+                onClick={() => {
+                  setShowSubMenu(false);
+                  setSelectedSport(null);
+                  setOpenDropdown(null);
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <div className="border-top pt-3">
+              {selectedSport.loading && selectedSport.name === "Tennis" ? (
+                <div className="text-center py-3">
+                  <div className="spinner-border spinner-border-sm text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <p className="mt-2 mb-0 small">Loading matches...</p>
+                </div>
+              ) : (
+                selectedSport.subMenuItems?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="py-2 px-3 mb-2 bg-secondary rounded cursor-pointer hover-bg-primary"
+                    style={{ cursor: 'pointer', transition: 'background-color 0.2s' }}
+                    onClick={() => handleMatchClick(item)}
+                  >
+                    {typeof item === 'object' ? (
+                      <div>
+                        <div className="fw-bold text-white" style={{ fontSize: '14px' }}>
+                          {item.display}
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center mt-1">
+                          <small className="text-light opacity-75">{item.tournament}</small>
+                          <span className={`badge ${
+                            item.status === 'Live' ? 'bg-danger' : 
+                            item.status === 'Upcoming' ? 'bg-warning text-dark' : 'bg-success'
+                          }`} style={{ fontSize: '10px' }}>
+                            {item.status}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-white">{item}</div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )
       )}
 
       {/* Match Details Panel */}
@@ -486,11 +558,11 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
         <div
           className="position-fixed bg-white"
           style={{
-            left: "200px",
+            left: screenSize === 'desktop' ? '200px' : 0,
+            right: 0,
             top: 0,
-            width: "calc(100vw - 200px)",
-            height: "100vh",
-            zIndex: 1097,
+            height: '100dvh',
+            zIndex: screenSize === 'desktop' ? 1097 : 1300,
             overflowY: "auto"
           }}
         >

@@ -102,7 +102,7 @@ const MatchDetails = ({ match }) => {
   }, [match]);
 
   return (
-    <div className="match-details-container">
+    <div className="match-details-container" style={{ width: '100%', maxWidth: '100vw', margin: 0, padding: 0, boxSizing: 'border-box', overflowX: 'hidden' }}>
       <style>
         {`
           @keyframes bounce {
@@ -290,16 +290,30 @@ const MatchDetails = ({ match }) => {
              }
         `}
       </style>
+      {/* Responsive tweaks for MatchDetails */}
+      <style>{`
+        .match-header { padding: 16px 0; }
+        .match-title { font-weight: 700; }
+        .live-stream-section { height: 400px !important; }
+        @media (max-width: 576px) {
+          .match-details-container { width: 100vw; max-width: 100vw; }
+          .live-stream-section { height: 240px !important; }
+          .live-score-overlay { left: 10px !important; width: calc(100% - 20px) !important; min-width: auto !important; }
+          .video-controls { bottom: 10px !important; }
+          .match-title { font-size: 20px !important; }
+          .match-meta span { display: block; font-size: 12px; }
+        }
+      `}</style>
       {/* Match Header */}
       <div className="match-header">
         <div className="match-status">
           <span className="live-indicator">LIVE</span>
           <span className="match-time">2h 15m</span>
         </div>
-        <h2 className="match-title">Rafael Nadal vs Novak Djokovic</h2>
+        <h2 className="match-title">{`${teamNames.team1} vs ${teamNames.team2}`}</h2>
         <div className="match-meta">
-          <span>French Open 2024 • Men's Singles Final</span>
-          <span>June 9, 2024 • Clay Court • €2,400,000</span>
+          <span>{match?.tournament || 'Exhibition'}{match?.status ? ` • ${match.status}` : ''}</span>
+          <span>{match?.startTime || 'Today'}{sportType === 'tennis' ? ' • Hard Court' : ''}</span>
         </div>
       </div>
 
@@ -609,8 +623,8 @@ const MatchDetails = ({ match }) => {
                 animation: 'ripple 2s infinite'
               }}></div>
             </div>
-            <h3 style={{margin: '0 0 10px 0', fontSize: '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>🎾 Live Tennis Stream</h3>
-            <p style={{margin: 0, opacity: 0.9, fontSize: '16px'}}>Rafael Nadal vs Novak Djokovic - French Open Final</p>
+            <h3 style={{margin: '0 0 10px 0', fontSize: '24px', textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>🎾 Live {sportType.charAt(0).toUpperCase() + sportType.slice(1)} Stream</h3>
+            <p style={{margin: 0, opacity: 0.9, fontSize: '16px'}}>{`${teamNames.team1} vs ${teamNames.team2}`}{match?.tournament ? ` - ${match.tournament}` : ''}</p>
             <div style={{
               marginTop: '15px',
               padding: '8px 16px',

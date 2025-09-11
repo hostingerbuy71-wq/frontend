@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { MemberDashboardSidebar } from "./SideBar";
 import swapLogo from "../../../assets/logos/Group 2.png";
+import { FaBars, FaTimes } from "react-icons/fa";
 // import { MainNavbar } from "../../Dashboard/MainNavbar"; // Uncomment if needed
 
 export const MemberDashboardLayout = () => {
@@ -46,6 +47,32 @@ export const MemberDashboardLayout = () => {
         overflowX: "hidden",
       }}
     >
+      {/* Mobile menu toggle button */}
+      {screenSize === "mobile" && (
+        <button
+          aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+          onClick={toggleSidebar}
+          style={{
+            position: "fixed",
+            top: 12,
+            left: 12,
+            zIndex: 1200,
+            width: 40,
+            height: 40,
+            borderRadius: 8,
+            border: "1px solid rgba(255,255,255,0.2)",
+            background: "rgba(0,0,0,0.7)",
+            color: "#fff",
+            display: "grid",
+            placeItems: "center",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {isSidebarOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+        </button>
+      )}
+
       {/* Sidebar */}
       <MemberDashboardSidebar
         screenSize={screenSize}
