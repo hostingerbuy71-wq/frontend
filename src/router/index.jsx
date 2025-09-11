@@ -13,6 +13,7 @@ import RoulettePage from "@/pages/RoulettePage";
 import DragonTigerPage from "@/pages/DragonTigerPage";
 import { UserPannelPage } from "@/pages/UserPannelPage";
 import AdminPanelPage from "@/pages/AdminPanelPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 // Your components
 
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminPanelPage />,
+    element: (
+      <ProtectedRoute adminOnly>
+        <AdminPanelPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/",
@@ -46,71 +51,7 @@ const router = createBrowserRouter([
         path: "common/dashboard",
         element: <DashBoardContentPage />,
       },
-      // Sports routes
-      {
-        path: "soccer",
-        element: <DashBoardContentPage />,
-      },
-      //   {
-      //   path: "royal-star-casino",
-      //   element: <DashBoardContentPage />,
-      // },
-      {
-        path: "tennis",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "cricket",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "horse-race",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "gray-hound",
-        element: <DashBoardContentPage />,
-      },
-      // Casino and other routes
-      {
-        path: "sport-book",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "royal-star-casino",
-        element: <RoyalStarCasinoComponent />,
-      },
-      {
-        path: "star-casino",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "world-casino",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "royal-casino",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "betfair-game",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "teen-patti-studio",
-        element: <DashBoardContentPage />,
-      },
-      {
-        
-        path: "galaxy-casino",
-        element: <DashBoardContentPage />,
-      },
-      {
-        path: "current-position",
-        element: <DashBoardContentPage />,
-      },
 
-      
       {
         path: "games/seven-updown",
         element: <SevenUpDownPage />,
@@ -118,7 +59,6 @@ const router = createBrowserRouter([
       },
 
 
-      
       {
         path: "games/roulette",
         element: <RoulettePage />,

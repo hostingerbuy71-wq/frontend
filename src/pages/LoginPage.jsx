@@ -4,6 +4,8 @@ import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
 import logo from '../assets/logos/Group 2.png';
 import './LoginPage.css';
 
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ const LoginPage = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch('https://bhaibet-backend-49d80bd19f71.herokuapp.com/api/auth/login', {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +86,7 @@ const LoginPage = () => {
                           name="email"
                           placeholder="Enter your email"
                           value={formData.email}
-                          onChange={handleInputChange}
+                          onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
                           className="form-input w-100"
                           required
                         />
@@ -103,7 +105,7 @@ const LoginPage = () => {
                           name="password"
                           placeholder="Enter your password"
                           value={formData.password}
-                          onChange={handleInputChange}
+                          onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
                           className="form-input w-100"
                           required
                         />

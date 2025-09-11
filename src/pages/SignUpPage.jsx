@@ -4,6 +4,8 @@ import { FaEye, FaEyeSlash, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import logo from '../assets/logos/Group 2.png';
 import './LoginPage.css';
 
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -36,7 +38,7 @@ const SignUpPage = () => {
     }
 
     try {
-      const response = await fetch('https://bhaibet-backend-49d80bd19f71.herokuapp.com/api/auth/register', {
+      const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

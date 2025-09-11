@@ -39,12 +39,36 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
   const [greyhoundRaces, setGreyhoundRaces] = useState([]);
   const [loadingGreyhound, setLoadingGreyhound] = useState(false);
 
-  // Fetch tennis matches from API
+  // Use backend base URL from env for fetch() calls
+  const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+
+  const handleAdminClick = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login first.');
+        navigate('/login');
+        return;
+      }
+      const res = await fetch(`${API_BASE}/api/auth/verify`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data?.success && data?.data?.user?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        alert('Only admin can access this area.');
+      }
+    } catch (e) {
+      alert('Could not verify user. Please try again.');
+    }
+  };
+
   const fetchTennisMatches = async () => {
     setLoadingTennis(true);
     try {
       console.log('🎾 Fetching tennis via backend proxy...');
-      const res = await fetch('/api/sports/tennis');
+      const res = await fetch(`${API_BASE}/api/sports/tennis`);
       if (!res.ok) throw new Error(`Backend responded ${res.status}`);
       const json = await res.json();
       const list = Array.isArray(json?.data) ? json.data : [];
@@ -74,7 +98,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
     setLoadingCricket(true);
     try {
       console.log('🏏 Fetching cricket via backend proxy...');
-      const res = await fetch('/api/sports/cricket');
+      const res = await fetch(`${API_BASE}/api/sports/cricket`);
       if (!res.ok) throw new Error(`Backend responded ${res.status}`);
       const json = await res.json();
       const list = Array.isArray(json?.data) ? json.data : [];
@@ -104,7 +128,7 @@ export const MemberDashboardSidebar = ({ isSidebarOpen, toggleSidebar, screenSiz
     setLoadingSoccer(true);
     try {
       console.log('⚽ Fetching soccer via backend proxy...');
-      const res = await fetch('/api/sports/soccer');
+      const res = await fetch(`${API_BASE}/api/sports/soccer`);
       if (!res.ok) throw new Error(`Backend responded ${res.status}`);
       const json = await res.json();
       const list = Array.isArray(json?.data) ? json.data : [];
