@@ -36,7 +36,7 @@ const SignUpPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('https://bhaibet-backend-49d80bd19f71.herokuapp.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
