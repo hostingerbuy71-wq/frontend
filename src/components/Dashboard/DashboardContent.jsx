@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 // Swiper
 import { Autoplay, Navigation } from "swiper/modules";
@@ -35,10 +35,18 @@ export const DashboardContent = () => {
   const [selected, setSelected] = useState("inplay");
   const navigate = useNavigate();
 
+  // Responsive: track viewport width
+  const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const handleLogout = () => {
     try {
       localStorage.removeItem('token');
-      // Optionally clear other session keys here
       navigate('/login');
     } catch (e) {
       console.error('Logout failed', e);
@@ -100,29 +108,31 @@ export const DashboardContent = () => {
               width: '100%',
               background: '#121212',
               color: '#ffffff',
-              padding: '8px 12px',
+              padding: vw < 576 ? '6px 10px' : '8px 12px',
               borderRadius: '6px',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.35)'
+              boxShadow: '0 4px 10px rgba(0,0,0,0.35)',
+              flexWrap: 'wrap',
+              gap: '8px 12px'
             }}
           >
             {/* Left: Close icon + Dashboard title */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="">
               {/* <span style={{ fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>×</span> */}
-              <span style={{ fontSize: '18px', fontWeight: 600 }}>Dashboard</span>
+              <Link to={'/user-dashboard'} className="mt-5 mt-md-0" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', fontWeight: 600, textDecoration: 'none', color: 'white' }}>Dashboard</Link>
             </div>
 
             {/* Center: Welcome message */}
-            <div style={{ color: '#cfcfcf', fontSize: '14px' }}>Welcome To Premium Exchange !</div>
+            <div  className="text-center d-flex justify-content-center align-items-center" style={{ color: '#cfcfcf', fontSize: 'clamp(12px, 1.4vw, 14px)', display: vw < 576 ? 'none' : 'block' }}>Welcome To Premium Exchange !</div>
 
             {/* Right: Balance | loss | avatar | username */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontWeight: 600 }}>Bal: 100,000</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: vw < 576 ? '8px' : '12px',  justifyContent: 'flex-end', minWidth: 220 }}>
+              <span style={{ fontWeight: 600, fontSize: 'clamp(12px, 1.6vw, 14px)' }}>Bal: 100,000</span>
               <span style={{ color: '#cfcfcf' }}>|</span>
-              <span>loss: 100</span>
+              {vw >= 420 && <span style={{ fontSize: 'clamp(12px, 1.6vw, 14px)' }}>loss: 100</span>}
               <div
                 style={{
-                  width: 28,
-                  height: 28,
+                  width: vw < 576 ? 24 : 28,
+                  height: vw < 576 ? 24 : 28,
                   borderRadius: '50%',
                   overflow: 'hidden',
                   border: '2px solid #F04141',
@@ -131,23 +141,25 @@ export const DashboardContent = () => {
                   justifyContent: 'center',
                   background: '#ffebe9',
                   color: '#F04141',
-                  fontWeight: 700
+                  fontWeight: 700,
+                  fontSize: vw < 576 ? 12 : 14
                 }}
                 aria-label="profile-avatar"
                 title="Profile"
               >
                 Z
               </div>
-              <span style={{ fontSize: '12px' }}>Zagam23 ▾</span>
+              {vw >= 480 && <span style={{ fontSize: '12px' }}>Zagam23 ▾</span>}
               <button onClick={handleLogout}
                       style={{
                         marginLeft: 8,
-                        padding: '6px 10px',
+                        padding: vw < 576 ? '4px 8px' : '6px 10px',
                         borderRadius: 6,
                         border: '1px solid #F04141',
                         background: 'transparent',
                         color: '#fff',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        fontSize: vw < 576 ? 12 : 14
                       }}
                       aria-label="Logout">
                 Logout
