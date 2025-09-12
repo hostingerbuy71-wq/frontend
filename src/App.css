@@ -6,3 +6,38 @@
 }
 
 
+
+/* Dark theme overrides for user dropdown */
+/* Keep toggle dark on hover/focus/open */
+#user-menu-toggle,
+#user-menu-toggle:hover,
+#user-menu-toggle:focus,
+.show > #user-menu-toggle.dropdown-toggle,
+#user-menu-toggle.dropdown-toggle.show {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-color: #F04141 !important;
+  box-shadow: none !important;
+}
+
+/* Force dark dropdown menu */
+.dropdown-menu.user-menu {
+  background-color: #1e1e1e !important;
+  border-color: #2a2a2a !important;
+}
+
+.dropdown-menu.user-menu .dropdown-item {
+  color: #eaeaea !important;
+}
+
+.dropdown-menu.user-menu .dropdown-item:hover,
+.dropdown-menu.user-menu .dropdown-item:focus {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+
+.dropdown-menu.user-menu .dropdown-divider {
+  border-top-color: #2f2f2f !important;
+}
+
+

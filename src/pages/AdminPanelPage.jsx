@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './AdminPanelPage.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
+
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
 
 const Avatar = ({ name }) => {
   const letter = name?.[0]?.toUpperCase?.() || 'U';
@@ -38,6 +42,25 @@ const Row = ({ date, user, txId, type, amount, status }) => {
 };
 
 export default function AdminPanelPage() {
+  const navigate = useNavigate();
+  const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!API_BASE || !token) return;
+    fetch(`${API_BASE}/api/auth/profile`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => (r.ok ? r.json() : null))
+      .then(res => { if (res?.success && res?.data?.user) setUser(res.data.user); })
+      .catch(() => {});
+  }, []);
+
   const rows = [
     { date: 'Dec 15, 2024', user: 'John Doe', txId: 'JD1245', type: 'Deposit', amount: 45200, status: 'Completed' },
     { date: 'Dec 14, 2024', user: 'Sarah', txId: 'SR0099', type: 'Withdrawal', amount: -1300, status: 'Pending' },
@@ -45,12 +68,97 @@ export default function AdminPanelPage() {
     { date: 'Dec 14, 2024', user: 'Emma', txId: 'EM7771', type: 'Transfer', amount: 500, status: 'Completed' },
     { date: 'Dec 14, 2024', user: 'Alex Brown', txId: 'AB013797', type: 'Bet Loss', amount: -5200, status: 'Cancelled' },
   ];
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      if (API_BASE && token) {
+        await fetch(`${API_BASE}/api/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }).catch(() => {});
+      }
+    } catch (e) {
+      console.error('Logout request failed', e);
+    } finally {
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+  };
+
+  const displayName = user?.fullName || user?.username || 'User';
+  const initial = displayName?.[0]?.toUpperCase?.() || 'U';
+  const goProfile = () => navigate('/user-dashboard');
+  const goStatement = () => navigate('/user-dashboard');
+  const goBalance = () => navigate('/user-dashboard');
 
   return (
     <div className="ap-page">
+      {/* Topbar */}
+      <div className="table-wrap d-flex gap-4 "
+        style={{ width: '100%', position: 'sticky', top: 0, zIndex: 999, background: '#121212' }}>
+        <div className="dashboard-topbar"
+          style={{ position: 'sticky', top: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: '#121212', color: '#ffffff', padding: vw < 576 ? '6px 10px' : '8px 12px', borderRadius: '6px', boxShadow: '0 4px 10px rgba(0,0,0,0.35)', flexWrap: 'wrap', gap: '8px 12px' }}>
+          {/* Left */}
+          <div className="">
+            <Link to={'/user-dashboard'} className="mt-5 mt-md-0" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', fontWeight: 600, textDecoration: 'none', color: 'white' }}>Dashboard</Link>
+          </div>
+          {/* Center */}
+          <div className="text-center d-flex justify-content-center align-items-center" style={{ color: '#cfcfcf', fontSize: 'clamp(12px, 1.4vw, 14px)', display: vw < 576 ? 'none' : 'block' }}>Welcome To Premium Exchange !</div>
+          {/* Right */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: vw < 576 ? '8px' : '12px', justifyContent: 'flex-end', minWidth: 260 }}>
+            <span style={{ fontWeight: 600, fontSize: 'clamp(12px, 1.6vw, 14px)' }}>Bal: 100,000</span>
+            <span style={{ color: '#cfcfcf' }}>|</span>
+            {vw >= 420 && <span style={{ fontSize: 'clamp(12px, 1.6vw, 14px)' }}>loss: 100</span>}
+
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                variant="outline-light"
+                size="sm"
+                id="user-menu-toggle"
+                style={{ display: 'flex', alignItems: 'center', gap: 8, borderColor: '#F04141', color: '#fff', backgroundColor: 'transparent' }}
+              >
+                <div
+                  style={{
+                    width: vw < 576 ? 24 : 28,
+                    height: vw < 576 ? 24 : 28,
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: '2px solid #F04141',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#ffebe9',
+                    color: '#F04141',
+                    fontWeight: 700,
+                    fontSize: vw < 576 ? 12 : 14
+                  }}
+                  aria-label="profile-avatar"
+                  title="Profile"
+                >
+                  {initial}
+                </div>
+                {vw >= 480 && <span style={{ fontSize: 12 }}>{displayName}</span>}
+              </Dropdown.Toggle>
+              <Dropdown.Menu variant="dark" className="user-menu" style={{ minWidth: 180 }}>
+                <Dropdown.Item onClick={goProfile} className="text-light">Profile</Dropdown.Item>
+                <Dropdown.Item onClick={goStatement} className="text-light">Statement</Dropdown.Item>
+                <Dropdown.Item onClick={goBalance} className="text-light">Balance</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={handleLogout} className="text-light">Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
+      </div>
+      {/* rest of page */}
       <div className="ap-grid">
+
+
         {/* Banking History (left) */}
         <section className="ap-panel ap-banking">
+
           <header className="ap-panel-header">
             <div className="ap-title">Banking History</div>
             <div className="ap-actions">

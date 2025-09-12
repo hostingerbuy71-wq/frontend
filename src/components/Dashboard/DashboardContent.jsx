@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 
 // Swiper
 import { Autoplay, Navigation } from "swiper/modules";
@@ -31,9 +32,13 @@ import BlackTennis from "@/assets/sperateimg/blackRocket.png";
 import BlackSoccer from "@/assets/sperateimg/blackSoccer.png";
 import BlackSportBook from "@/assets/sperateimg/blackSportBook.png";
 
+// Define API base once for this module
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+
 export const DashboardContent = () => {
   const [selected, setSelected] = useState("inplay");
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   // Responsive: track viewport width
   const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
@@ -42,6 +47,15 @@ export const DashboardContent = () => {
     const onResize = () => setVw(window.innerWidth);
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!API_BASE || !token) return;
+    fetch(`${API_BASE}/api/auth/profile`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => (r.ok ? r.json() : null))
+      .then(res => { if (res?.success && res?.data?.user) setUser(res.data.user); })
+      .catch(() => {});
   }, []);
 
   const handleLogout = () => {
@@ -53,6 +67,13 @@ export const DashboardContent = () => {
       navigate('/login');
     }
   };
+
+  // Values used by the dropdown UI
+  const displayName = user?.fullName || user?.username || 'User';
+  const initial = displayName?.[0]?.toUpperCase?.() || 'U';
+  const goProfile = () => navigate('/user-dashboard');
+  const goStatement = () => {};
+  const goBalance = () => {};
 
   const products = [
     TeenPatti,
@@ -91,9 +112,6 @@ export const DashboardContent = () => {
         <div className="table-wrap d-flex gap-4 "
              style={{
                width: '100%',
-               position: 'sticky',
-               top: 0,
-               zIndex: 999,
                background: '#121212'
              }}>
           <div
@@ -118,7 +136,7 @@ export const DashboardContent = () => {
             {/* Left: Close icon + Dashboard title */}
             <div className="">
               {/* <span style={{ fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>×</span> */}
-              <Link to={'/user-dashboard'} className="mt-5 mt-md-0" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', fontWeight: 600, textDecoration: 'none', color: 'white' }}>Dashboard</Link>
+              <Link to={'/user-dashboard'} className="mt-5 mt-md-0 ms-5 ms-md-0" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', fontWeight: 600, textDecoration: 'none', color: 'white' }}>Dashboard</Link>
             </div>
 
             {/* Center: Welcome message */}
@@ -126,44 +144,47 @@ export const DashboardContent = () => {
 
             {/* Right: Balance | loss | avatar | username */}
             <div style={{ display: 'flex', alignItems: 'center', gap: vw < 576 ? '8px' : '12px',  justifyContent: 'flex-end', minWidth: 220 }}>
-              <span style={{ fontWeight: 600, fontSize: 'clamp(12px, 1.6vw, 14px)' }}>Bal: 100,000</span>
+              <span style={{ fontWeight: 600, fontSize: 'clamp(12px, 1.6vw, 14px)' }}>Bal: 1000</span>
               <span style={{ color: '#cfcfcf' }}>|</span>
               {vw >= 420 && <span style={{ fontSize: 'clamp(12px, 1.6vw, 14px)' }}>loss: 100</span>}
-              <div
-                style={{
-                  width: vw < 576 ? 24 : 28,
-                  height: vw < 576 ? 24 : 28,
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  border: '2px solid #F04141',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: '#ffebe9',
-                  color: '#F04141',
-                  fontWeight: 700,
-                  fontSize: vw < 576 ? 12 : 14
-                }}
-                aria-label="profile-avatar"
-                title="Profile"
-              >
-                Z
-              </div>
-              {vw >= 480 && <span style={{ fontSize: '12px' }}>Zagam23 ▾</span>}
-              <button onClick={handleLogout}
-                      style={{
-                        marginLeft: 8,
-                        padding: vw < 576 ? '4px 8px' : '6px 10px',
-                        borderRadius: 6,
-                        border: '1px solid #F04141',
-                        background: 'transparent',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        fontSize: vw < 576 ? 12 : 14
-                      }}
-                      aria-label="Logout">
-                Logout
-              </button>
+
+              <Dropdown align="end" drop={vw < 420 ? "down-centered" : "down"} popperConfig={{ strategy: 'fixed' }}>
+                <Dropdown.Toggle
+                  variant="outline-light"
+                  size="sm"
+                  id="user-menu-toggle"
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, borderColor: '#F04141', color: '#fff', backgroundColor: 'transparent', padding: vw < 576 ? '2px 6px' : '4px 8px' }}
+                >
+                  <div
+                    style={{
+                      width: vw < 576 ? 24 : 28,
+                      height: vw < 576 ? 24 : 28,
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      border: '2px solid #F04141',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#ffebe9',
+                      color: '#F04141',
+                      fontWeight: 700,
+                      fontSize: vw < 576 ? 12 : 14
+                    }}
+                    aria-label="profile-avatar"
+                    title="Profile"
+                  >
+                    {initial}
+                  </div>
+                  {vw >= 480 && <span style={{ fontSize: 12 }}>{displayName}</span>}
+                </Dropdown.Toggle>
+                <Dropdown.Menu variant="dark" className="user-menu" style={{ minWidth: vw < 420 ? 160 : 180, maxWidth: 220, zIndex: 2000 }}>
+                   <Dropdown.Item onClick={goProfile} className="text-light">Profile</Dropdown.Item>
+                   <Dropdown.Item onClick={goStatement} className="text-light">Statement</Dropdown.Item>
+                   <Dropdown.Item onClick={goBalance} className="text-light">Balance</Dropdown.Item>
+                   <Dropdown.Divider />
+                   <Dropdown.Item onClick={handleLogout} className="text-light">Logout</Dropdown.Item>
+                 </Dropdown.Menu>
+              </Dropdown>
             </div>
           </div>
         </div>
