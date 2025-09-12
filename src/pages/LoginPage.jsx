@@ -15,11 +15,20 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const identifier = formData.email.trim();
+    const body = { password: formData.password };
+    if (identifier.includes('@')) {
+      body.email = identifier;
+    } else {
+      body.username = identifier;
+    }
+
     try {
       const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, password: formData.password })
+        body: JSON.stringify(body)
       });
 
       const data = await response.json();
@@ -53,17 +62,17 @@ const LoginPage = () => {
                 <Card.Body className="p-3">
                   <div className="text-center mb-3">
                     <img src={logo} alt="Bhalbet888" className="login-logo" />
-                    <h4 className="welcome-text mt-2">Welcome back Bhalbet888</h4>
-                    <p className="signin-text">Sign in to your account to continue</p>
+                    <h4 className="welcome-text mt-2">Welcome back Bhaibet888</h4>
+                    {/* <p className="signin-text">Sign in to your account to continue</p> */}
                   </div>
 
                   <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
-                      <Form.Label className="form-label">Email address</Form.Label>
+                      <Form.Label className="form-label">Email or Username</Form.Label>
                       <Form.Control
-                        type="email"
+                        type="text"
                         name="email"
-                        placeholder="Enter your email"
+                        placeholder="Enter email or username"
                         value={formData.email}
                         onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
                         className="form-input w-100"

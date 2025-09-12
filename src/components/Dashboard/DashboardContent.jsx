@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Swiper
 import { Autoplay, Navigation } from "swiper/modules";
@@ -32,6 +33,18 @@ import BlackSportBook from "@/assets/sperateimg/blackSportBook.png";
 
 export const DashboardContent = () => {
   const [selected, setSelected] = useState("inplay");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('token');
+      // Optionally clear other session keys here
+      navigate('/login');
+    } catch (e) {
+      console.error('Logout failed', e);
+      navigate('/login');
+    }
+  };
 
   const products = [
     TeenPatti,
@@ -67,23 +80,86 @@ export const DashboardContent = () => {
     <div className="w-100 bg-white h-100">
       {/* Wallet Info */}
       <div className="left-content" id="cust-wallet">
-        <div className="table-wrap d-flex gap-4">
+        <div className="table-wrap d-flex gap-4 "
+             style={{
+               width: '100%',
+               position: 'sticky',
+               top: 0,
+               zIndex: 999,
+               background: '#121212'
+             }}>
           <div
-            className="table-box-header d-flex gap-4"
-            style={{ display: "flex", gap: "30px" }}
+            className="dashboard-topbar"
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              background: '#121212',
+              color: '#ffffff',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.35)'
+            }}
           >
-            <span>Credit: 0</span>
-            <span className="runrate">Balance: 1,000</span>
-            <span className="runrate">Liable: 0</span>
-            <span className="runrate">Active Bets: 0</span>
+            {/* Left: Close icon + Dashboard title */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {/* <span style={{ fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>×</span> */}
+              <span style={{ fontSize: '18px', fontWeight: 600 }}>Dashboard</span>
+            </div>
+
+            {/* Center: Welcome message */}
+            <div style={{ color: '#cfcfcf', fontSize: '14px' }}>Welcome To Premium Exchange !</div>
+
+            {/* Right: Balance | loss | avatar | username */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontWeight: 600 }}>Bal: 100,000</span>
+              <span style={{ color: '#cfcfcf' }}>|</span>
+              <span>loss: 100</span>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid #F04141',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#ffebe9',
+                  color: '#F04141',
+                  fontWeight: 700
+                }}
+                aria-label="profile-avatar"
+                title="Profile"
+              >
+                Z
+              </div>
+              <span style={{ fontSize: '12px' }}>Zagam23 ▾</span>
+              <button onClick={handleLogout}
+                      style={{
+                        marginLeft: 8,
+                        padding: '6px 10px',
+                        borderRadius: 6,
+                        border: '1px solid #F04141',
+                        background: 'transparent',
+                        color: '#fff',
+                        cursor: 'pointer'
+                      }}
+                      aria-label="Logout">
+                Logout
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Slider 1 */}
-      <div className="barely-slider h-100">
+      <div className="barely-slider h-100 mt-4">
         <Swiper
-          spaceBetween={10}
+          spaceBetween={6}
           slidesPerView="auto"
           loop={true}
           autoplay={{
@@ -97,11 +173,11 @@ export const DashboardContent = () => {
           modules={[Autoplay, Navigation]}
           centeredSlides={false}
           breakpoints={{
-            320: { slidesPerView: 1, spaceBetween: 10 },
-            576: { slidesPerView: 2, spaceBetween: 10 },
-            768: { slidesPerView: 3 },
-            1024: { slidesPerView: 4},
-            1200: { slidesPerView: 4 },
+            320: { slidesPerView: 1, spaceBetween: 4 },
+            576: { slidesPerView: 2, spaceBetween: 6 },
+            768: { slidesPerView: 3, spaceBetween: 6 },
+            1024: { slidesPerView: 4, spaceBetween: 8 },
+            1200: { slidesPerView: 4, spaceBetween: 8 },
           }}
         >
           {products.map((product, index) => (
@@ -109,17 +185,16 @@ export const DashboardContent = () => {
               key={index}
               style={{
                 display: "flex",
-                width: "215px",
-            height:"220px",
-            objectFit:"contain",
+                width: "200px",
                 justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <img
                 src={product}
-                alt="ada"
-                className="ratio-1x1 object-cover img-position-center img-fluid"
-                style={{ width: "220px" }}
+                alt="product"
+                className="img-fluid"
+                style={{ width: "100%", height: "auto", objectFit: "contain" }}
               />
             </SwiperSlide>
           ))}
@@ -435,6 +510,7 @@ export const DashboardContent = () => {
   </div>
 )}
 
+    </div>
     </div>
   );
 };
