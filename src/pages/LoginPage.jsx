@@ -13,37 +13,27 @@ const LoginPage = () => {
     password: ''
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
       const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        alert('Login successful!');
         // Store token
         localStorage.setItem('token', data.data.token);
-        // Redirect to dashboard
-        window.location.href = '/';
+        // Redirect based on role
+        const role = data?.data?.user?.role;
+        if (role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
       } else {
         alert(data.message || 'Login failed');
       }
@@ -51,10 +41,6 @@ const LoginPage = () => {
       console.error('Login error:', error);
       alert('Network error. Please check if the backend server is running.');
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
@@ -65,80 +51,58 @@ const LoginPage = () => {
             <Col xs={12} sm={8} md={6} lg={4} xl={3}>
               <Card className="login-card">
                 <Card.Body className="p-3">
-                  {/* Logo */}
-                   <div className="text-center mb-3">
-                     <img src={logo} alt="Bhalbet888" className="login-logo" />
-                     <h4 className="welcome-text mt-2">Welcome back Bhalbet888</h4>
-                     <p className="signin-text">Sign in to your account to continue</p>
-                   </div>
+                  <div className="text-center mb-3">
+                    <img src={logo} alt="Bhalbet888" className="login-logo" />
+                    <h4 className="welcome-text mt-2">Welcome back Bhalbet888</h4>
+                    <p className="signin-text">Sign in to your account to continue</p>
+                  </div>
 
-                  {/* Login Form */}
                   <Form onSubmit={handleSubmit}>
-                    {/* Email Field */}
                     <Form.Group className="mb-3">
                       <Form.Label className="form-label">Email address</Form.Label>
-                      <div className="input-group">
-                        {/* <span className="input-group-text input-icon">
-                          <FaEnvelope />
-                        </span> */}
-                        <Form.Control
-                          type="email"
-                          name="email"
-                          placeholder="Enter your email"
-                          value={formData.email}
-                          onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                          className="form-input w-100"
-                          required
-                        />
-                      </div>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={formData.email}
+                        onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                        className="form-input w-100"
+                        required
+                      />
                     </Form.Group>
 
-                    {/* Password Field */}
                     <Form.Group className="mb-4">
                       <Form.Label className="form-label">Password</Form.Label>
-                      <div className="input-group">
-                        {/* <span className="input-group-text input-icon">
-                          <FaLock />
-                        </span> */}
-                        <Form.Control
-                          type={showPassword ? 'text' : 'password'}
-                          name="password"
-                          placeholder="Enter your password"
-                          value={formData.password}
-                          onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                          className="form-input w-100"
-                          required
-                        />
-                        
-                      </div>
+                      <Form.Control
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                        className="form-input w-100"
+                        required
+                      />
                     </Form.Group>
 
-                    {/* Login Button */}
-                    <Button 
-                      type="submit" 
-                      className="login-btn w-100 mb-3"
-                      size="lg"
-                    >
+                    <Button type="submit" className="login-btn w-100 mb-3" size="lg">
                       Login
                     </Button>
 
-                    {/* Sign Up Link */}
-                     <div className="text-center">
-                       <span className="signup-text">
-                         Don't have an account? 
-                         <a href="/signup" className="signup-link"> Sign up</a>
-                       </span>
-                     </div>
+                    <div className="text-center">
+                      <span className="signup-text">
+                        Don't have an account?
+                        <a href="/signup" className="signup-link"> Sign up</a>
+                      </span>
+                    </div>
                   </Form>
 
-                  {/* Terms and Privacy */}
-                   <div className="text-center mt-3">
-                     <small className="terms-text">
-                       By signing in, you agree to our 
-                       <a href="#" className="terms-link"> Terms of Service</a> and 
-                       <a href="#" className="terms-link">Privacy Policy</a>
-                     </small>
-                   </div>
+                  <div className="text-center mt-3">
+                    <small className="terms-text">
+                      By signing in, you agree to our
+                      <a href="#" className="terms-link"> Terms of Service</a> and
+                      <a href="#" className="terms-link">Privacy Policy</a>
+                    </small>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

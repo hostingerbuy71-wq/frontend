@@ -52,7 +52,7 @@ export const RoyalStarCasinoComponent = () => {
     if (gameId === 900002) return '/games/roulette';
     if (gameId === 900003) return '/games/teen-patti';
     if (gameId === 900004) return '/games/dragon-tiger';
-    return `/Common/RSC?id=${gameId}&d=d`;
+    return
   };
 
   return (

@@ -40,7 +40,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <MemberDashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <MemberDashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -70,6 +74,11 @@ const router = createBrowserRouter([
       {
         path: "games/dragon-tiger",
         element: <DragonTigerPage />,
+      },
+      // Show Royal Star Casino catalog page under the dashboard layout
+      {
+        path: "royal-star-casino",
+        element: <RoyalStarCasinoComponent />,
       },
     ],
   },
