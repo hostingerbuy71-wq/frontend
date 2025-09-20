@@ -44,6 +44,14 @@ export default function AdminPanelPage() {
 
   const money = (n) => n.toLocaleString();
 
+  // Create slug consistent with sidebar navigation -> /admin/soccer/:slug
+  const slugify = (name) => name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const matchSlug = (displayName) => {
+    // Remove trailing market type like "/ Match Odds" and normalize the " v " token
+    const titleOnly = String(displayName).split('/')?.[0]?.trim() || String(displayName);
+    return slugify(titleOnly.replace(/\s*v\s*/i, '-v-'));
+  };
+
   return (
     <div className="adm-page">
       {/* Search Users */}
@@ -91,7 +99,16 @@ export default function AdminPanelPage() {
                 {sports.soccer.map((row) => (
                   <tr key={row.id}>
                     <td>
-                      <a className="adm-link" href="#" onClick={(e)=>{e.preventDefault();}}>
+                      {/* Navigate to admin soccer match detail on click */}
+                      <a
+                        className="adm-link"
+                        href="#"
+                        onClick={(e)=>{
+                          e.preventDefault();
+                          const slug = matchSlug(row.name);
+                          navigate(`/admin/soccer/${slug}`);
+                        }}
+                      >
                         {row.name} <span className="adm-dot" aria-hidden />
                       </a>
                     </td>

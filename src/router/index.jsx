@@ -15,6 +15,14 @@ import { UserPannelPage } from "@/pages/UserPannelPage";
 import AdminPanelPage from "@/pages/AdminPanelPage";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboardLayout from "@/components/Layout/admin/Layout";
+import AdminUsersPage from "@/pages/AdminUsersPage";
+import AdminReportsPage from "@/pages/AdminReportsPage";
+import AdminSoccerMatchPage from "@/pages/AdminSoccerMatchPage";
+import AdminCurrentPositionPage from "@/pages/AdminCurrentPositionPage";
+import AdminBetLockPage from "@/pages/AdminBetLockPage";
+import AdminStarCasinoPage from "@/pages/AdminStarCasinoPage";
+import AdminWorldCasinoPage from "@/pages/AdminWorldCasinoPage";
+import AdminBetFairGamesPage from "@/pages/AdminBetFairGamesPage";
 
 // Your components
 
@@ -40,12 +48,16 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <AdminPanelPage /> },
-      { path: "users", element: <div style={{padding:16}}>Users list coming soon…</div> },
-      { path: "reports", element: <div style={{padding:16}}>Reports coming soon…</div> },
-      { path: "positions", element: <div style={{padding:16}}>Current Position coming soon…</div> },
-      { path: "bet-lock", element: <div style={{padding:16}}>Bet Lock coming soon…</div> },
+      { path: "users", element: <AdminUsersPage /> },
+      { path: "reports", element: <AdminReportsPage /> },
+      { path: "positions", element: <AdminCurrentPositionPage /> },
+      { path: "bet-lock", element: <AdminBetLockPage /> },
       { path: "games/soccer", element: <div style={{padding:16}}>Soccer markets</div> },
+      { path: "soccer/:slug", element: <AdminSoccerMatchPage /> },
       { path: "games/tennis", element: <div style={{padding:16}}>Tennis markets</div> },
+      { path: "games/star-casino", element: <AdminStarCasinoPage /> },
+      { path: "world-casino", element: <AdminWorldCasinoPage /> },
+      { path: "betfair-games", element: <AdminBetFairGamesPage /> },
     ],
   },
   {
