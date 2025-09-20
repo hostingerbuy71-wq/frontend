@@ -14,6 +14,7 @@ import DragonTigerPage from "@/pages/DragonTigerPage";
 import { UserPannelPage } from "@/pages/UserPannelPage";
 import AdminPanelPage from "@/pages/AdminPanelPage";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminDashboardLayout from "@/components/Layout/admin/Layout";
 
 // Your components
 
@@ -31,12 +32,21 @@ const router = createBrowserRouter([
     element: <UserPannelPage />,
   },
   {
-    path: "admin",
+    path: "/admin",
     element: (
       <ProtectedRoute adminOnly>
-        <AdminPanelPage />
+        <AdminDashboardLayout />
       </ProtectedRoute>
     ),
+    children: [
+      { index: true, element: <AdminPanelPage /> },
+      { path: "users", element: <div style={{padding:16}}>Users list coming soon…</div> },
+      { path: "reports", element: <div style={{padding:16}}>Reports coming soon…</div> },
+      { path: "positions", element: <div style={{padding:16}}>Current Position coming soon…</div> },
+      { path: "bet-lock", element: <div style={{padding:16}}>Bet Lock coming soon…</div> },
+      { path: "games/soccer", element: <div style={{padding:16}}>Soccer markets</div> },
+      { path: "games/tennis", element: <div style={{padding:16}}>Tennis markets</div> },
+    ],
   },
   {
     path: "/",
