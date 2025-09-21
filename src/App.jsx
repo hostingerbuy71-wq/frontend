@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import { WebRouter } from "./router";
 import store from "./store/store";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// Bootstrap CSS is loaded once from main.jsx to keep order stable across builds
 function App() {
   return (
     <>
