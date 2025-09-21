@@ -1,26 +1,56 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { fileURLToPath } from "url";
+// import { defineConfig } from "vite";
+// import react from "@vitejs/plugin-react-swc";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-// https://vite.dev/config/
-export default defineConfig({
+// // https://vite.dev/config/
+// export default defineConfig({
+//   plugins: [react()],
+//   resolve: {
+//     alias: {
+//       "@": path.resolve(__dirname, "./src"),
+//     },
+//   },
+//   server: {
+//     proxy: {
+//       "/api": {
+//         target: "http://localhost:5001",
+//         changeOrigin: true,
+//         secure: false,
+//       },
+//     },
+//   },
+// });
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react-swc"
+import path from "path"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export default defineConfig(({ command }) => ({
   plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:5001",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
-});
+  // sirf development ke time proxy use karo
+  ...(command === "serve"
+    ? {
+        server: {
+          proxy: {
+            "/api": {
+              target: "http://localhost:5001",
+              changeOrigin: true,
+              secure: false,
+            },
+          },
+        },
+      }
+    : {}),
+}))
