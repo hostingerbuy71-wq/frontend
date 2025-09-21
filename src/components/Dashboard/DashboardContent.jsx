@@ -155,6 +155,7 @@ export const DashboardContent = () => {
                   id="user-menu-toggle"
                   style={{ display: 'flex', alignItems: 'center', gap: 8, borderColor: '#F04141', color: '#fff', backgroundColor: 'transparent', padding: vw < 576 ? '2px 6px' : '4px 8px' }}
                 >
+                  
                   <div
                     style={{
                       width: vw < 576 ? 24 : 28,
