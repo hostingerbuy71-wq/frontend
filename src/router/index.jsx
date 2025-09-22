@@ -34,19 +34,17 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />,
-
+    
   },
   {
     path: "/user-dashboard",
     element: <UserPannelPage />,
-
   },
   {
     path: "/admin",
     element: (
       <ProtectedRoute adminOnly>
         <AdminDashboardLayout />
-        
       </ProtectedRoute>
     ),
     children: [

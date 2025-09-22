@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import '../../../pages/AdminPanelPage.css';
-import BhaiBetLogo from '../../../assets/logos/Group 2.png'
+
 export default function AdminDashboardLayout() {
   const [collapsed, setCollapsed] = useState(false); // desktop collapse
   const [isMobile, setIsMobile] = useState(false);
@@ -77,7 +77,7 @@ export default function AdminDashboardLayout() {
     <div className={shellClass}>
       {/* Top navbar matching the screenshot */}
       <header className="admin-topbar">
-        <div className="admin-brand admin-brand--light"><img src={BhaiBetLogo} alt="Bhaibet" width={40} height={40} /></div>
+        <div className="admin-brand admin-brand--light">BETPRO</div>
         <button
           className="admin-hamburger"
           aria-label="Toggle sidebar"
@@ -94,7 +94,7 @@ export default function AdminDashboardLayout() {
         <div style={{flex:1}} />
         <div className="admin-right">
           <button type="button" className="admin-user-toggle">
-            Zagam<span aria-hidden>▾</span>
+            Admin786 (SuperMaster) <span aria-hidden>▾</span>
           </button>
           <div className="admin-stats">
             <span><strong>B: 0</strong></span>

@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ children, adminOnly = false, memberRoutes }) => {
   const [loading, setLoading] = useState(true);
   const [allowed, setAllowed] = useState(false);
+  
   const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
 
   useEffect(() => {
