@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-.vite
+.vite/
 .env
 .env.*.local
+
+package-lock.json
