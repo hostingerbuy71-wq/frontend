@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown, Modal, Form } from "react-bootstrap";
 
 // Swiper
 import { Autoplay, Navigation } from "swiper/modules";
@@ -33,45 +33,68 @@ import BlackSoccer from "@/assets/sperateimg/blackSoccer.png";
 import BlackSportBook from "@/assets/sperateimg/blackSportBook.png";
 
 // Define API base once for this module
-const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '');
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/$/, "");
 
 export const DashboardContent = () => {
   const [selected, setSelected] = useState("inplay");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-
+  const [show, setShow] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [amount, setAmount] = useState("");
   // Responsive: track viewport width
-  const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [vw, setVw] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const onResize = () => setVw(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!API_BASE || !token) return;
-    fetch(`${API_BASE}/api/auth/profile`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => (r.ok ? r.json() : null))
-      .then(res => { if (res?.success && res?.data?.user) setUser(res.data.user); })
+    fetch(`${API_BASE}/api/auth/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((res) => {
+        if (res?.success && res?.data?.user) setUser(res.data.user);
+      })
       .catch(() => {});
   }, []);
 
   const handleLogout = () => {
     try {
-      localStorage.removeItem('token');
-      navigate('/login');
+      localStorage.removeItem("token");
+      navigate("/login");
     } catch (e) {
-      console.error('Logout failed', e);
-      navigate('/login');
+      console.error("Logout failed", e);
+      navigate("/login");
     }
   };
 
+  const handleOpen = (type) => {
+    setModalType(type);
+    setShow(true);
+    setAmount(""); // Reset amount when opening modal
+  };
+
+  const handleClose = () => setShow(false);
+  
+  const handleSubmit = () => {
+    // Here you would typically handle the deposit/withdraw logic
+    alert(`${modalType} of $${amount} requested`);
+    setShow(false);
+    setAmount("");
+  };
+  
   // Values used by the dropdown UI
-  const displayName = user?.fullName || user?.username || 'User';
-  const initial = displayName?.[0]?.toUpperCase?.() || 'U';
-  const goProfile = () => navigate('/user-dashboard');
+  const displayName = user?.fullName || user?.username || "User";
+  const initial = displayName?.[0]?.toUpperCase?.() || "U";
+  const goProfile = () => navigate("/user-dashboard");
   const goStatement = () => {};
   const goBalance = () => {};
 
@@ -102,449 +125,596 @@ export const DashboardContent = () => {
     { id: "cricket", label: "Cricket", icon: BlackCricket, bg: "#D9D9D9" },
     { id: "tennis", label: "Tennis", icon: BlackTennis, bg: "#D9D9D9" },
     { id: "soccer", label: "Soccer", icon: BlackSoccer, bg: "#D9D9D9" },
-    { id: "sportsbook", label: "Sports Book", icon: BlackSportBook, bg: "#D9D9D9" },
+    {
+      id: "sportsbook",
+      label: "Sports Book",
+      icon: BlackSportBook,
+      bg: "#D9D9D9",
+    },
   ];
 
   return (
     <div className="w-100 bg-white h-100">
       {/* Wallet Info */}
       <div className="left-content" id="cust-wallet">
-        <div className="table-wrap d-flex gap-4 "
-             style={{
-               width: '100%',
-               background: '#121212'
-             }}>
+        <div
+          className="table-wrap d-flex gap-4 "
+          style={{
+            width: "100%",
+            background: "#121212",
+          }}
+        >
           <div
             className="dashboard-topbar"
             style={{
-              position: 'sticky',
+              position: "sticky",
               top: 0,
               zIndex: 1000,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-              background: '#121212',
-              color: '#ffffff',
-              padding: vw < 576 ? '6px 10px' : '8px 12px',
-              borderRadius: '6px',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.35)',
-              flexWrap: 'wrap',
-              gap: '8px 12px'
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              background: "#121212",
+              color: "#ffffff",
+              padding: vw < 576 ? "6px 10px" : "8px 12px",
+              borderRadius: "6px",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.35)",
+              flexWrap: "wrap",
+              gap: "8px 12px",
             }}
           >
             {/* Left: Close icon + Dashboard title */}
             <div className="">
               {/* <span style={{ fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>×</span> */}
-              <Link to={'/user-dashboard'} className="mt-5 mt-md-0 ms-5 ms-md-0" style={{ fontSize: 'clamp(14px, 1.8vw, 18px)', fontWeight: 600, textDecoration: 'none', color: 'white' }}>Dashboard</Link>
+              <Link
+                to={"/user-dashboard"}
+                className="mt-5 mt-md-0 ms-5 ms-md-0"
+                style={{
+                  fontSize: "clamp(14px, 1.8vw, 18px)",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  color: "white",
+                }}
+              >
+                Dashboard
+              </Link>
             </div>
 
             {/* Center: Welcome message */}
-            <div  className="text-center d-flex justify-content-center align-items-center" style={{ color: '#cfcfcf', fontSize: 'clamp(12px, 1.4vw, 14px)', display: vw < 576 ? 'none' : 'block' }}>Welcome To Premium Exchange !</div>
+            <div
+              className="text-center d-flex justify-content-center align-items-center"
+              style={{
+                color: "#cfcfcf",
+                fontSize: "clamp(12px, 1.4vw, 14px)",
+                display: vw < 576 ? "none" : "block",
+              }}
+            >
+              Welcome To Premium Exchange !
+            </div>
 
             {/* Right: Balance | loss | avatar | username */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: vw < 576 ? '8px' : '12px',  justifyContent: 'flex-end', minWidth: 220 }}>
-              <span style={{ fontWeight: 600, fontSize: 'clamp(12px, 1.6vw, 14px)' }}>Bal: 1000</span>
-              <span style={{ color: '#cfcfcf' }}>|</span>
-              {vw >= 420 && <span style={{ fontSize: 'clamp(12px, 1.6vw, 14px)' }}>loss: 100</span>}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: vw < 576 ? "8px" : "12px",
+                justifyContent: "flex-end",
+                minWidth: 220,
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 600,
+                  fontSize: "clamp(12px, 1.6vw, 14px)",
+                }}
+              >
+                Bal: 1000
+              </span>
+              <span style={{ color: "#cfcfcf" }}>|</span>
+              {vw >= 420 && (
+                <span style={{ fontSize: "clamp(12px, 1.6vw, 14px)" }}>
+                  loss: 100
+                </span>
+              )}
 
-              <Dropdown align="end" drop={vw < 420 ? "down-centered" : "down"} popperConfig={{ strategy: 'fixed' }}>
+              <Dropdown
+                align="end"
+                drop={vw < 420 ? "down-centered" : "down"}
+                popperConfig={{ strategy: "fixed" }}
+              >
                 <Dropdown.Toggle
                   variant="outline-light"
                   size="sm"
                   id="user-menu-toggle"
-                  style={{ display: 'flex', alignItems: 'center', gap: 8, borderColor: '#F04141', color: '#fff', backgroundColor: 'transparent', padding: vw < 576 ? '2px 6px' : '4px 8px' }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    borderColor: "#F04141",
+                    color: "#fff",
+                    backgroundColor: "transparent",
+                    padding: vw < 576 ? "2px 6px" : "4px 8px",
+                  }}
                 >
-                  
                   <div
                     style={{
                       width: vw < 576 ? 24 : 28,
                       height: vw < 576 ? 24 : 28,
-                      borderRadius: '50%',
-                      overflow: 'hidden',
-                      border: '2px solid #F04141',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: '#ffebe9',
-                      color: '#F04141',
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      border: "2px solid #F04141",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#ffebe9",
+                      color: "#F04141",
                       fontWeight: 700,
-                      fontSize: vw < 576 ? 12 : 14
+                      fontSize: vw < 576 ? 12 : 14,
                     }}
                     aria-label="profile-avatar"
                     title="Profile"
                   >
                     {initial}
                   </div>
-                  {vw >= 480 && <span style={{ fontSize: 12 }}>{displayName}</span>}
+                  {vw >= 480 && (
+                    <span style={{ fontSize: 12 }}>{displayName}</span>
+                  )}
                 </Dropdown.Toggle>
-                <Dropdown.Menu variant="dark" className="user-menu" style={{ minWidth: vw < 420 ? 160 : 180, maxWidth: 220, zIndex: 2000 }}>
-                   <Dropdown.Item onClick={goProfile} className="text-light">Profile</Dropdown.Item>
-                   <Dropdown.Item onClick={goStatement} className="text-light">Statement</Dropdown.Item>
-                   <Dropdown.Item onClick={goBalance} className="text-light">Balance</Dropdown.Item>
-                   <Dropdown.Divider />
-                   <Dropdown.Item onClick={handleLogout} className="text-light">Logout</Dropdown.Item>
-                 </Dropdown.Menu>
+                <Dropdown.Menu
+                  variant="dark"
+                  className="user-menu"
+                  style={{
+                    minWidth: vw < 420 ? 160 : 180,
+                    maxWidth: 220,
+                    zIndex: 2000,
+                  }}
+                >
+                  <Dropdown.Item onClick={goProfile} className="text-light">
+                    Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={goStatement} className="text-light">
+                    Statement
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={goBalance} className="text-light">
+                    Balance
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={handleLogout} className="text-light">
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
               </Dropdown>
             </div>
           </div>
         </div>
-
-      {/* Slider 1 */}
-      <div className="barely-slider h-100 mt-4">
-        <Swiper
-          spaceBetween={6}
-          slidesPerView="auto"
-          loop={true}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          }}
-          modules={[Autoplay, Navigation]}
-          centeredSlides={false}
-          breakpoints={{
-            320: { slidesPerView: 1, spaceBetween: 4 },
-            576: { slidesPerView: 2, spaceBetween: 6 },
-            768: { slidesPerView: 3, spaceBetween: 6 },
-            1024: { slidesPerView: 4, spaceBetween: 8 },
-            1200: { slidesPerView: 4, spaceBetween: 8 },
-          }}
-        >
-          {products.map((product, index) => (
-            <SwiperSlide
-              key={index}
-              style={{
-                display: "flex",
-                width: "200px",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+        <div className="d-flex gap-3 justify-content-end mt-3">
+          <button 
+            className="border border-0 text-white d-flex justify-conntent-center align-items-center" 
+            style={{backgroundColor:"green",borderRadius:"2px"}}
+            onClick={() => handleOpen("Deposit")}
+          > 
+            Deposit
+          </button> 
+          <button 
+            className="border border-0 px-1 py-1 text-white me-2" 
+            style={{backgroundColor:"red",borderRadius:"2px"}}
+            onClick={() => handleOpen("Withdraw")}
+          > 
+            Withdraw
+          </button>
+        </div>
+         
+        <Modal show={show} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{modalType} Funds</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Amount</Form.Label>
+                <Form.Control 
+                  type="number" 
+                  placeholder={`Enter amount to ${modalType.toLowerCase()}`}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </Form.Group>
+              {modalType === "Deposit" ? (
+                <p>Enter the amount you want to deposit.</p>
+              ) : (
+                <p>Enter the amount you want to withdraw.</p>
+              )}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button
+              variant={modalType === "Deposit" ? "success" : "danger"}
+              onClick={handleSubmit}
+              disabled={!amount}
             >
-              <img
-                src={product}
-                alt="product"
-                className="img-fluid"
-                style={{ width: "100%", height: "auto", objectFit: "contain" }}
-              />
-            </SwiperSlide>
-          ))}
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
-        </Swiper>
-      </div>
-
-      {/* Horse Race */}
-      <div className="d-flex align-items-center gap-3">
-        <img src={HoreseBlack} alt="dad" />
-        <h5>Horse Race</h5>
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
-        <Swiper
-          spaceBetween={10}
-          slidesPerView="auto"
-          loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          }}
-          modules={[Autoplay, Navigation]}
-          centeredSlides={false}
-          breakpoints={{
-            320: { slidesPerView: 2, spaceBetween: 10 },
-            576: { slidesPerView: 3, spaceBetween: 10 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 5 },
-            1200: { slidesPerView: 6 },
-          }}
-        >
-          {timeSchedule.map((product, index) => (
-            <SwiperSlide key={index} style={{ width: "215px" }}>
-              <div
-                className="d-flex flex-column justify-content-center text-center"
-                style={{ borderLeft: "1px solid #fff" }}
-              >
-                <div>{product.time}</div>
-                <div>{product.slideName}</div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-
-      {/* Greyhound */}
-      <div className="d-flex align-items-center gap-3">
-        <img src={BlackHound} alt="dad" />
-        <h5>Greyhound</h5>
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
-        <Swiper
-          spaceBetween={10}
-          slidesPerView="auto"
-          loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          }}
-          modules={[Autoplay, Navigation]}
-          centeredSlides={false}
-          breakpoints={{
-            320: { slidesPerView: 2, spaceBetween: 10 },
-            576: { slidesPerView: 3, spaceBetween: 10 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 5 },
-            1200: { slidesPerView: 6 },
-          }}
-        >
-          {timeSchedule.map((product, index) => (
-            <SwiperSlide key={index} style={{ width: "215px" }}>
-              <div
-                className="d-flex flex-column justify-content-center text-center"
-                style={{ borderLeft: "1px solid #fff" }}
-              >
-                <div>{product.time}</div>
-                <div>{product.slideName}</div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-
-      {/* Sports Menu */}
-      <div className="w-100 py-2 d-flex gap-3">
-        {sports.map((sport) => (
-          <div
-            key={sport.id}
-            onClick={() => setSelected(sport.id)}
-            className="d-flex justify-content-center align-items-center"
-            style={{
-              backgroundColor: selected === sport.id ? "#F04141" : sport.bg,
-              width: "65px",
-              height: "65px",
-              borderRadius: "5px",
-              cursor: "pointer",
+              {modalType}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        
+        {/* Slider 1 */}
+        <div className="barely-slider h-100 mt-3">
+          <Swiper
+            spaceBetween={6}
+            slidesPerView="auto"
+            loop={true}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            modules={[Autoplay, Navigation]}
+            centeredSlides={false}
+            breakpoints={{
+              320: { slidesPerView: 1, spaceBetween: 4 },
+              576: { slidesPerView: 2, spaceBetween: 6 },
+              768: { slidesPerView: 3, spaceBetween: 6 },
+              1024: { slidesPerView: 4, spaceBetween: 8 },
+              1200: { slidesPerView: 4, spaceBetween: 8 },
             }}
           >
-            <div className="text-center">
-              <img src={sport.icon} alt={sport.label} width={30} height={30} />
-              <div
-                className={selected === sport.id ? "text-white" : "text-black"}
+            {products.map((product, index) => (
+              <SwiperSlide
+                key={index}
+                style={{
+                  display: "flex",
+                  width: "200px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                {sport.label}
+                <img
+                  src={product}
+                  alt="product"
+                  className="img-fluid"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    objectFit: "contain",
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+            <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div>
+          </Swiper>
+        </div>
+
+        {/* Horse Race */}
+        <div className="d-flex align-items-center gap-3">
+          <img src={HoreseBlack} alt="dad" />
+          <h5>Horse Race</h5>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
+          <Swiper
+            spaceBetween={10}
+            slidesPerView="auto"
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            modules={[Autoplay, Navigation]}
+            centeredSlides={false}
+            breakpoints={{
+              320: { slidesPerView: 2, spaceBetween: 10 },
+              576: { slidesPerView: 3, spaceBetween: 10 },
+              768: { slidesPerView: 4 },
+              1024: { slidesPerView: 5 },
+              1200: { slidesPerView: 6 },
+            }}
+          >
+            {timeSchedule.map((product, index) => (
+              <SwiperSlide key={index} style={{ width: "215px" }}>
+                <div
+                  className="d-flex flex-column justify-content-center text-center"
+                  style={{ borderLeft: "1px solid #fff" }}
+                >
+                  <div>{product.time}</div>
+                  <div>{product.slideName}</div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Greyhound */}
+        <div className="d-flex align-items-center gap-3">
+          <img src={BlackHound} alt="dad" />
+          <h5>Greyhound</h5>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }} className="bg-black text-white">
+          <Swiper
+            spaceBetween={10}
+            slidesPerView="auto"
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            modules={[Autoplay, Navigation]}
+            centeredSlides={false}
+            breakpoints={{
+              320: { slidesPerView: 2, spaceBetween: 10 },
+              576: { slidesPerView: 3, spaceBetween: 10 },
+              768: { slidesPerView: 4 },
+              1024: { slidesPerView: 5 },
+              1200: { slidesPerView: 6 },
+            }}
+          >
+            {timeSchedule.map((product, index) => (
+              <SwiperSlide key={index} style={{ width: "215px" }}>
+                <div
+                  className="d-flex flex-column justify-content-center text-center"
+                  style={{ borderLeft: "1px solid #fff" }}
+                >
+                  <div>{product.time}</div>
+                  <div>{product.slideName}</div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Sports Menu */}
+        <div className="w-100 py-2 d-flex gap-3">
+          {sports.map((sport) => (
+            <div
+              key={sport.id}
+              onClick={() => setSelected(sport.id)}
+              className="d-flex justify-content-center align-items-center"
+              style={{
+                backgroundColor: selected === sport.id ? "#F04141" : sport.bg,
+                width: "65px",
+                height: "65px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              <div className="text-center">
+                <img
+                  src={sport.icon}
+                  alt={sport.label}
+                  width={30}
+                  height={30}
+                />
+                <div
+                  className={
+                    selected === sport.id ? "text-white" : "text-black"
+                  }
+                >
+                  {sport.label}
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Dynamic Details Section */}
+        {selected === "cricket" && (
+          <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+            <div className="row">
+              <div className="col-md-5">
+                <div className="d-flex">
+                  <img
+                    src={BlackCricket}
+                    alt="cricket"
+                    width={20}
+                    height={20}
+                  />
+                  <h5 className="ms-2">Cricket</h5>
+                </div>
+              </div>
+
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-3">Matched</div>
+                  <div className="col-md-3">1</div>
+                  <div className="col-md-3">X</div>
+                  <div className="col-md-3">2</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                  backgroundColor: "#F04141",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <div className="text-center text-white">
+                  <div>Inplay</div>
+                  <div>1:45PM</div>
+                </div>
+              </div>
+              <div className="fw-bold">Zimbabwe v Sri Lanka</div>
+            </div>
           </div>
-        ))}
-      </div>
+        )}
 
-      {/* Dynamic Details Section */}
-    {selected === "cricket" && (
-  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-    <div className="row">
-      <div className="col-md-5">
-        <div className="d-flex">
-          <img src={BlackCricket} alt="cricket" width={20} height={20} />
-          <h5 className="ms-2">Cricket</h5>
-        </div>
-      </div>
+        {selected === "tennis" && (
+          <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+            <div className="row">
+              <div className="col-md-5">
+                <div className="d-flex">
+                  <img src={BlackTennis} alt="tennis" width={20} height={20} />
+                  <h5 className="ms-2">Tennis</h5>
+                </div>
+              </div>
 
-      <div className="col-md-7">
-        <div className="row">
-          <div className="col-md-3">Matched</div>
-          <div className="col-md-3">1</div>
-          <div className="col-md-3">X</div>
-          <div className="col-md-3">2</div>
-        </div>
-      </div>
-    </div>
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-3">Set</div>
+                  <div className="col-md-3">Player A</div>
+                  <div className="col-md-3">Player B</div>
+                  <div className="col-md-3">Score</div>
+                </div>
+              </div>
+            </div>
 
-    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          backgroundColor: "#F04141",
-          width: "60px",
-          height: "60px",
-        }}
-      >
-        <div className="text-center text-white">
-          <div>Inplay</div>
-          <div>1:45PM</div>
-        </div>
-      </div>
-      <div className="fw-bold">Zimbabwe v Sri Lanka</div>
-    </div>
-  </div>
-)}
+            <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                  backgroundColor: "#198754",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <div className="text-center text-white">
+                  <div>Live</div>
+                  <div>2nd Set</div>
+                </div>
+              </div>
+              <div className="fw-bold">Nadal v Djokovic</div>
+            </div>
+          </div>
+        )}
 
-{selected === "tennis" && (
-  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-    <div className="row">
-      <div className="col-md-5">
-        <div className="d-flex">
-          <img src={BlackTennis} alt="tennis" width={20} height={20} />
-          <h5 className="ms-2">Tennis</h5>
-        </div>
-      </div>
+        {selected === "soccer" && (
+          <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+            <div className="row">
+              <div className="col-md-5">
+                <div className="d-flex">
+                  <img src={BlackSoccer} alt="soccer" width={20} height={20} />
+                  <h5 className="ms-2">Soccer</h5>
+                </div>
+              </div>
 
-      <div className="col-md-7">
-        <div className="row">
-          <div className="col-md-3">Set</div>
-          <div className="col-md-3">Player A</div>
-          <div className="col-md-3">Player B</div>
-          <div className="col-md-3">Score</div>
-        </div>
-      </div>
-    </div>
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-3">Time</div>
+                  <div className="col-md-3">Home</div>
+                  <div className="col-md-3">Draw</div>
+                  <div className="col-md-3">Away</div>
+                </div>
+              </div>
+            </div>
 
-    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          backgroundColor: "#198754",
-          width: "60px",
-          height: "60px",
-        }}
-      >
-        <div className="text-center text-white">
-          <div>Live</div>
-          <div>2nd Set</div>
-        </div>
-      </div>
-      <div className="fw-bold">Nadal v Djokovic</div>
-    </div>
-  </div>
-)}
+            <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                  backgroundColor: "#0d6efd",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <div className="text-center text-white">
+                  <div>Live</div>
+                  <div>75'</div>
+                </div>
+              </div>
+              <div className="fw-bold">Barcelona v Real Madrid</div>
+            </div>
+          </div>
+        )}
 
-{selected === "soccer" && (
-  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-    <div className="row">
-      <div className="col-md-5">
-        <div className="d-flex">
-          <img src={BlackSoccer} alt="soccer" width={20} height={20} />
-          <h5 className="ms-2">Soccer</h5>
-        </div>
-      </div>
+        {selected === "sportsbook" && (
+          <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+            <div className="row">
+              <div className="col-md-5">
+                <div className="d-flex">
+                  <img
+                    src={BlackSportBook}
+                    alt="sportsbook"
+                    width={20}
+                    height={20}
+                  />
+                  <h5 className="ms-2">Sports Book</h5>
+                </div>
+              </div>
 
-      <div className="col-md-7">
-        <div className="row">
-          <div className="col-md-3">Time</div>
-          <div className="col-md-3">Home</div>
-          <div className="col-md-3">Draw</div>
-          <div className="col-md-3">Away</div>
-        </div>
-      </div>
-    </div>
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-3">Event</div>
+                  <div className="col-md-3">Type</div>
+                  <div className="col-md-3">Odds</div>
+                  <div className="col-md-3">Market</div>
+                </div>
+              </div>
+            </div>
 
-    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          backgroundColor: "#0d6efd",
-          width: "60px",
-          height: "60px",
-        }}
-      >
-        <div className="text-center text-white">
-          <div>Live</div>
-          <div>75'</div>
-        </div>
-      </div>
-      <div className="fw-bold">Barcelona v Real Madrid</div>
-    </div>
-  </div>
-)}
+            <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                  backgroundColor: "#6c757d",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <div className="text-center text-white">
+                  <div>Bet</div>
+                  <div>Open</div>
+                </div>
+              </div>
+              <div className="fw-bold">Super Bowl Winner 2025</div>
+            </div>
+          </div>
+        )}
 
-{selected === "sportsbook" && (
-  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-    <div className="row">
-      <div className="col-md-5">
-        <div className="d-flex">
-          <img src={BlackSportBook} alt="sportsbook" width={20} height={20} />
-          <h5 className="ms-2">Sports Book</h5>
-        </div>
-      </div>
+        {selected === "inplay" && (
+          <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
+            <div className="row">
+              <div className="col-md-5">
+                <div className="d-flex">
+                  <img src={AlarmIcon} alt="inplay" width={20} height={20} />
+                  <h5 className="ms-2">Inplay</h5>
+                </div>
+              </div>
 
-      <div className="col-md-7">
-        <div className="row">
-          <div className="col-md-3">Event</div>
-          <div className="col-md-3">Type</div>
-          <div className="col-md-3">Odds</div>
-          <div className="col-md-3">Market</div>
-        </div>
-      </div>
-    </div>
+              <div className="col-md-7">
+                <div className="row">
+                  <div className="col-md-3">Game</div>
+                  <div className="col-md-3">Status</div>
+                  <div className="col-md-3">Score</div>
+                  <div className="col-md-3">Time</div>
+                </div>
+              </div>
+            </div>
 
-    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          backgroundColor: "#6c757d",
-          width: "60px",
-          height: "60px",
-        }}
-      >
-        <div className="text-center text-white">
-          <div>Bet</div>
-          <div>Open</div>
-        </div>
+            <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                  backgroundColor: "#dc3545",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <div className="text-center text-white">
+                  <div>Live</div>
+                  <div>Running</div>
+                </div>
+              </div>
+              <div className="fw-bold">India v Australia (Cricket)</div>
+            </div>
+          </div>
+        )}
       </div>
-      <div className="fw-bold">Super Bowl Winner 2025</div>
-    </div>
-  </div>
-)}
-
-{selected === "inplay" && (
-  <div className="py-2 px-2" style={{ backgroundColor: "#AEAEAE" }}>
-    <div className="row">
-      <div className="col-md-5">
-        <div className="d-flex">
-          <img src={AlarmIcon} alt="inplay" width={20} height={20} />
-          <h5 className="ms-2">Inplay</h5>
-        </div>
-      </div>
-
-      <div className="col-md-7">
-        <div className="row">
-          <div className="col-md-3">Game</div>
-          <div className="col-md-3">Status</div>
-          <div className="col-md-3">Score</div>
-          <div className="col-md-3">Time</div>
-        </div>
-      </div>
-    </div>
-
-    <div className="d-flex align-items-center gap-4 mt-2 bg-white p-2">
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          backgroundColor: "#dc3545",
-          width: "60px",
-          height: "60px",
-        }}
-      >
-        <div className="text-center text-white">
-          <div>Live</div>
-          <div>Running</div>
-        </div>
-      </div>
-      <div className="fw-bold">India v Australia (Cricket)</div>
-    </div>
-  </div>
-)}
-
-    </div>
     </div>
   );
 };
