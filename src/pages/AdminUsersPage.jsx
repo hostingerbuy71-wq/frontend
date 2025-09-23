@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdminPanelPage.css';
 
 export default function AdminUsersPage(){
+  const navigate = useNavigate();
+
+  const handleNewUserClick = () => {
+    navigate('/admin/users/new');
+  };
+
   return (
     <div className="adm-page" style={{padding:16}}>
       {/* Report Type */}
@@ -67,7 +74,7 @@ export default function AdminUsersPage(){
           </div>
 
           <div style={{display:'flex',gap:10,flexWrap:'wrap',marginTop:12,alignItems:'center'}}>
-            <button className="adm-btn-green">New User</button>
+            <button className="adm-btn-green" onClick={handleNewUserClick}>New User</button>
             <button className="adm-btn-green" style={{display:'inline-flex',alignItems:'center',gap:6}}>
               <span role="img" aria-label="ledger">📒</span> Account Ledger
             </button>

@@ -23,6 +23,7 @@ import AdminBetLockPage from "@/pages/AdminBetLockPage";
 import AdminStarCasinoPage from "@/pages/AdminStarCasinoPage";
 import AdminWorldCasinoPage from "@/pages/AdminWorldCasinoPage";
 import AdminBetFairGamesPage from "@/pages/AdminBetFairGamesPage";
+import AdminNewUserPage from "@/pages/AdminNewUserPage";
 
 // Your components
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <AdminPanelPage /> },
       { path: "users", element: <AdminUsersPage /> },
+      { path: "users/new", element: <AdminNewUserPage /> },
       { path: "reports", element: <AdminReportsPage /> },
       { path: "positions", element: <AdminCurrentPositionPage /> },
       { path: "bet-lock", element: <AdminBetLockPage /> },
