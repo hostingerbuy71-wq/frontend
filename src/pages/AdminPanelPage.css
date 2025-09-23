@@ -96,7 +96,7 @@ html,body,#root{width:100%;max-width:100%;overflow-x:hidden}
 .adm-table-wrap{overflow:auto;border:1px solid #e2e8ee;border-radius:4px;background:#fff;max-width:100%;}
 .adm-table{width:100%;border-collapse:collapse}
 .adm-table thead th{background:#eef3f6;color:#2b3745;font-weight:600;text-align:left;padding:10px;border-bottom:1px solid #d9e2ea}
-.adm-table tbody td{padding:9px 10px;border-bottom:1px solid #e4ebf1}
+.adm-table tbody td{padding:9px 10px;border-bottom:1px solid #e4ebf1;color:#000000}
 .adm-table tbody tr:hover{background:#f9fbfc}
 
 /* Tabs used on Users page */
